@@ -3,7 +3,11 @@ import pathlib
 import pytest
 
 from mao.unihan import download_unihan_zip, read_unihan_field_values
-from tests.conftest import SKIP_DOWNLOAD_TESTS, clear_unihan_test_files, UNIHAN_TEST_PATH
+from tests.conftest import (
+    SKIP_DOWNLOAD_TESTS,
+    clear_unihan_test_files,
+    UNIHAN_TEST_PATH,
+)
 
 
 def setup_module():
