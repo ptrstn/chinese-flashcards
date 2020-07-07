@@ -17,24 +17,16 @@ df = spread_unihan_dataframe_columns(df)
 df = create_encoded_columns(df)
 df = split_radical_additional_strokes_column(df)
 
-
 columns = [
     "glyph",
     "simplified_glyph",
     "traditional_glyph",
     "radical",
     "kDefinition",
-    "kTotalStrokes",
-    "kFrequency",
-    "kGradeLevel",
     "kMandarin",
     "kCantonese",
-    "kHangul",
     "kKorean",
-    "kJapaneseKun",
     "kJapaneseOn",
-    "kVietnamese",
-    "kTang",
 ]
 
 radicals = df[df.additional_strokes == 0][columns]
@@ -42,8 +34,10 @@ radicals.sort_values(["radical", "glyph"], inplace=True)
 
 kangxi = retrieve_unicode_kangxi_table()
 
+print("Kangxi Radicals:")
 original = radicals[radicals.glyph.isin(list(kangxi.glyph))]
 print(original)
 
+print("Unified Kangxi Radicals:")
 unified = radicals[radicals.glyph.isin(list(kangxi.unified_glyph))]
 print(unified)
