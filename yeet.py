@@ -1,7 +1,11 @@
 import pandas
 
 from mao.kangxi import retrieve_unicode_kangxi_table
-from mao.tidy import spread_unihan_dataframe_columns, create_encoded_columns, split_radical_additional_strokes_column
+from mao.tidy import (
+    spread_unihan_dataframe_columns,
+    create_encoded_columns,
+    split_radical_additional_strokes_column,
+)
 from mao.unihan import read_all_unihan_files
 
 pandas.set_option("display.max_rows", 500)
@@ -13,7 +17,26 @@ df = spread_unihan_dataframe_columns(df)
 df = create_encoded_columns(df)
 df = split_radical_additional_strokes_column(df)
 
-columns = ["glyph", "radical", "kMandarin", "kCantonese", "kHangul", "kKorean", "kJapaneseKun", "kJapaneseOn", "kVietnamese", "kTang"]
+
+columns = [
+    "glyph",
+    "simplified_glyph",
+    "traditional_glyph",
+    "radical",
+    "kDefinition",
+    "kTotalStrokes",
+    "kFrequency",
+    "kGradeLevel",
+    "kMandarin",
+    "kCantonese",
+    "kHangul",
+    "kKorean",
+    "kJapaneseKun",
+    "kJapaneseOn",
+    "kVietnamese",
+    "kTang",
+]
+
 radicals = df[df.additional_strokes == 0][columns]
 radicals.sort_values(["radical", "glyph"], inplace=True)
 
