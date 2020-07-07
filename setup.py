@@ -27,5 +27,5 @@ setup(
     author="Peter Stein",
     license="MIT",
     packages=["mao"],
-    install_requires=["requests", "beautifulsoup4"],
+    install_requires=["requests", "beautifulsoup4", "pandas"],
 )
