@@ -1,3 +1,5 @@
+import re
+
 import pandas
 
 from mao.unicode import encode_unicode_character, encode_unicode_characters
@@ -29,6 +31,28 @@ def create_encoded_columns(dataframe):
         else row.kTraditionalVariant,
         axis=1,
     )
+
+    dataframe["variant_unicode"] = dataframe.kTraditionalVariant.copy()
+    dataframe["variant_glyph"] = dataframe.apply(
+        lambda row: encode_unicode_characters(row.kTraditionalVariant)
+        if not pandas.isnull(row.kTraditionalVariant)
+        else row.kTraditionalVariant,
+        axis=1,
+    )
+
+    dataframe["variant_unicode"] = dataframe.apply(
+        lambda row: " ".join(re.findall(r"U\+[0-9A-F]+", row.kSemanticVariant))
+        if not pandas.isnull(row.kSemanticVariant)
+        else row.kTraditionalVariant,
+        axis=1,
+    )
+    dataframe["variant_glyph"] = dataframe.apply(
+        lambda row: encode_unicode_characters(row.variant_unicode)
+        if not pandas.isnull(row.variant_unicode)
+        else row.kTraditionalVariant,
+        axis=1,
+    )
+
     dataframe.sort_values(by=["glyph"], inplace=True)
     return dataframe
 
