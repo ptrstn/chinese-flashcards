@@ -31,8 +31,12 @@ def read_unihan_file(path):
     return pandas.read_table(path, names=column_names, comment="#")
 
 
+def list_unihan_file_paths(base_path=UNIHAN_BASE_PATH):
+    return list(pathlib.Path(base_path).glob(UNIHAN_FILE_PATTERN))
+
+
 def read_all_unihan_files(base_path=UNIHAN_BASE_PATH):
-    file_paths = list(pathlib.Path(base_path).glob(UNIHAN_FILE_PATTERN))
+    file_paths = list_unihan_file_paths(base_path)
     return pandas.concat([read_unihan_file(path) for path in file_paths])
 
 

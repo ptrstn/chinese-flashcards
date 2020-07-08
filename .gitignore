@@ -185,3 +185,4 @@ data/documents/**
 data/unihan/**
 data/backups/**
 *.html
+*.csv
