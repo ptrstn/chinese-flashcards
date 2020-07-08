@@ -43,7 +43,7 @@ col_types = cols(
   kZVariant = col_character(),
   kAccountingNumeric = col_integer(),
   kOtherNumeric = col_integer(),
-  kPrimaryNumeric = col_number()
+  kPrimaryNumeric = col_character()
 )
 
 
@@ -57,7 +57,25 @@ unihan <- read_delim(
 
 
 radicals <- unihan %>% filter(is_kangxi_radical) %>% arrange(radical)
-
 nrow(radicals)
-
 View(radicals)
+
+first_grader <- unihan %>% filter(kGradeLevel == 1) %>% arrange(additional_strokes, radical)
+nrow(first_grader)
+View(first_grader)
+
+most_frequent <- unihan %>% filter(kFrequency == 1)%>% arrange(additional_strokes, radical)
+nrow(most_frequent)
+View(most_frequent)
+
+numbers <- unihan %>% filter(!is.na(kPrimaryNumeric)) %>% arrange(as.numeric(kPrimaryNumeric))
+nrow(numbers)
+View(numbers)
+
+accounting_numbers <- unihan %>% filter(!is.na(kAccountingNumeric)) %>% arrange(as.numeric(kAccountingNumeric))
+nrow(accounting_numbers)
+View(accounting_numbers)
+
+other_numeric <- unihan %>% filter(!is.na(kOtherNumeric)) %>% arrange(as.numeric(kOtherNumeric))
+nrow(other_numeric)
+View(other_numeric)
