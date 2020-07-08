@@ -69,6 +69,7 @@ def _split_radical_column(dataframe):
     splitted = dataframe.radical.str.split("'", expand=True)
     splitted = assure_two_columns(splitted)
     splitted.loc[~splitted[1].isnull(), 1] = True
+    splitted.loc[splitted[1].isnull(), 1] = False
     return splitted
 
 
@@ -85,6 +86,7 @@ def split_radical_additional_strokes_column(dataframe):
         dataframe
     )
 
+    dataframe.drop(["radical_stroke", "second_radical_stroke"], axis=1, inplace=True)
     dataframe.radical = dataframe.radical.astype(int)
     dataframe.additional_strokes = dataframe.additional_strokes.astype(int)
 

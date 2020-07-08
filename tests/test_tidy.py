@@ -65,14 +65,14 @@ def test_split_radical_additional_strokes_column():
 
     dataframe = pandas.DataFrame(data=["120'.3"], columns=["kRSUnicode"])
     dataframe = split_radical_additional_strokes_column(dataframe)
-    assert expected_new_columns.issubset(set(dataframe))
+    assert {"kRSUnicode", *expected_new_columns} == set(dataframe)
     assert dataframe.iloc[0]["radical"] == 120
     assert dataframe.iloc[0]["additional_strokes"] == 3
     assert dataframe.iloc[0]["simplified_radical_indicator"] is True
 
     dataframe = pandas.DataFrame(data=["25.5 197'.0"], columns=["kRSUnicode"])
     dataframe = split_radical_additional_strokes_column(dataframe)
-    assert expected_new_columns.issubset(set(dataframe))
+    assert {"kRSUnicode", *expected_new_columns} == set(dataframe)
     assert dataframe.iloc[0]["radical"] == 25
     assert dataframe.iloc[0]["additional_strokes"] == 5
-    assert dataframe.iloc[0]["simplified_radical_indicator"] is None
+    assert dataframe.iloc[0]["simplified_radical_indicator"] is False
