@@ -1,3 +1,4 @@
+from mao.kangxi import add_is_kangxi_radical_column
 from mao.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
@@ -13,6 +14,7 @@ dataframe = read_all_unihan_files()
 dataframe = spread_unihan_dataframe_columns(dataframe)
 dataframe = create_encoded_columns(dataframe)
 dataframe = split_radical_additional_strokes_column(dataframe)
+dataframe = add_is_kangxi_radical_column(dataframe)
 
 desired_columns = [
     "glyph",
@@ -21,6 +23,7 @@ desired_columns = [
     "radical",
     "additional_strokes",
     "simplified_radical_indicator",
+    "is_kangxi_radical",
     "simplified_glyph",
     "simplified_unicode",
     "traditional_glyph",
