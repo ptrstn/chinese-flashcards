@@ -24,14 +24,20 @@ def test_spread_unihan_dataframe_columns():
 
 
 def test_create_encoded_columns():
-    columns = ["unicode", "kSimplifiedVariant", "kTraditionalVariant"]
+    columns = [
+        "unicode",
+        "kSimplifiedVariant",
+        "kTraditionalVariant",
+        "kSemanticVariant",
+    ]
 
     data = numpy.array(
         [
-            ["513F", None, "0x5152"],
-            ["0x5E72", None, "U+4e7e U+5E79"],
-            ["6236", "0x6237", None],
-            ["706B", None, None],
+            ["513F", None, "0x5152", None],
+            ["0x5E72", None, "U+4e7e U+5E79", None],
+            ["6236", "0x6237", None, None],
+            ["706B", None, None, None],
+            ["U+5fc3", None, None, "U+38FA<kMatthews U+5FC4<kMatthews"],
         ]
     )
 
@@ -47,6 +53,7 @@ def test_create_encoded_columns():
     assert encoded_dataframe.loc["戶", "traditional_glyph"] is None
     assert encoded_dataframe.loc["火", "simplified_glyph"] is None
     assert encoded_dataframe.loc["火", "traditional_glyph"] is None
+    assert encoded_dataframe.loc["心", "variant_glyph"] == "㣺 忄"
 
 
 def test_split_radical_additional_strokes_column():

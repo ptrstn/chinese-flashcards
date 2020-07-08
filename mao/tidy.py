@@ -32,14 +32,6 @@ def create_encoded_columns(dataframe):
         axis=1,
     )
 
-    dataframe["variant_unicode"] = dataframe.kTraditionalVariant.copy()
-    dataframe["variant_glyph"] = dataframe.apply(
-        lambda row: encode_unicode_characters(row.kTraditionalVariant)
-        if not pandas.isnull(row.kTraditionalVariant)
-        else row.kTraditionalVariant,
-        axis=1,
-    )
-
     dataframe["variant_unicode"] = dataframe.apply(
         lambda row: " ".join(re.findall(r"U\+[0-9A-F]+", row.kSemanticVariant))
         if not pandas.isnull(row.kSemanticVariant)
