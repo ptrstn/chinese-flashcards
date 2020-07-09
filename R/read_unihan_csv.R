@@ -112,5 +112,15 @@ ggplot(radicals_summary, aes(cumsum(radical_count_perc))) + stat_ecdf(geom = "st
 ggplot(radicals_summary, aes(id, cumsum(radical_count_perc))) + geom_line()
 # => 50 out of 214 Radicals make up 70% of all Unihan characters 
 
-ggplot(radicals_summary, aes(cumsum(id_perc), cumsum(radical_count_perc))) + geom_line()
+ggplot(radicals_summary, aes(cumsum(id_perc) , cumsum(radical_count_perc * 100))) + 
+  geom_line() + 
+  geom_hline(yintercept=80, linetype="dashed", color = "gray") +
+  geom_vline(xintercept=10, linetype="dashed", color = "gray") +
+  scale_x_continuous(breaks = c(0, 10, 25, 50, 75, 100)) + 
+  scale_y_continuous(breaks = c(0, 25, 50, 75, 80, 100)) + 
+  xlab("Proportion of the Number of Radicals in %") + 
+  ylab("Coverage of the Total Number of Glyphs in %") +
+  ggtitle("Cumulative Distribution of Radicals versus Total Number of Han Characters")
+
 # => Effect here is even greater. See Pareto principle
+# compare with https://www.researchgate.net/figure/Pareto-principle-Performing-20-of-the-effort-will-lead-to-80-of-the-results_fig3_37933519
