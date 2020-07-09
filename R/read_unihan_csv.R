@@ -2,8 +2,9 @@
 
 library(readr)
 library(dplyr)
+library(ggplot2)
 
-col_types = cols(
+col_types <- cols(
   glyph = col_character(),
   unicode = col_character(),
   kDefinition = col_character(),
@@ -64,6 +65,18 @@ first_grader <- unihan %>% filter(kGradeLevel == 1) %>% arrange(additional_strok
 nrow(first_grader)
 View(first_grader)
 
+unique(unihan$kGradeLevel)
+
+hk_school_system <- unihan%>% filter(kGradeLevel >= 0)
+hk_school_system$kGradeLevel <- as.factor(hk_school_system$kGradeLevel)
+nrow(hk_school_system)
+ggplot(hk_school_system, aes(factor(kGradeLevel), fill=factor(radical))) + geom_histogram(stat = "count") + theme(legend.position = "none")
+ggplot(hk_school_system, aes(radical, colour=kGradeLevel)) + geom_freqpoly(stat="count")
+ggplot(hk_school_system, aes(radical, colour = kGradeLevel)) + geom_density()
+ggplot(hk_school_system, aes(radical, fill = kGradeLevel)) + geom_density(position = "stack")
+ggplot(hk_school_system, aes(radical, fill = kGradeLevel)) + geom_density(position = "fill")
+ggplot(hk_school_system, aes(radical, after_stat(count), fill = kGradeLevel)) + geom_density(position = "fill")
+
 most_frequent <- unihan %>% filter(kFrequency == 1)%>% arrange(additional_strokes, radical)
 nrow(most_frequent)
 View(most_frequent)
@@ -79,3 +92,25 @@ View(accounting_numbers)
 other_numeric <- unihan %>% filter(!is.na(kOtherNumeric)) %>% arrange(as.numeric(kOtherNumeric))
 nrow(other_numeric)
 View(other_numeric)
+
+radicals_summary <- unihan %>% 
+  group_by(radical) %>%
+  summarise(radical_count = n()) %>%
+  arrange(desc(radical_count))
+
+total_count <- sum(radicals_summary$radical_count)
+radicals_summary$radical_count_perc <- radicals_summary$radical_count/total_count
+radicals_summary$id <- seq.int(nrow(radicals_summary))
+number_of_radicals <- max(radicals$radical)
+radicals_summary$id_perc <- radicals_summary$id/number_of_radicals
+
+ggplot(radicals_summary, aes(id, radical_count)) + geom_line()
+ggplot(unihan, aes(radical)) + stat_ecdf(geom = "step")
+ggplot(radicals_summary, aes(cumsum(radical_count_perc))) + stat_ecdf(geom = "step")
+# => 25% of the radicals account to 75% of the total number of characters
+
+ggplot(radicals_summary, aes(id, cumsum(radical_count_perc))) + geom_line()
+# => 50 out of 214 Radicals make up 70% of all Unihan characters 
+
+ggplot(radicals_summary, aes(cumsum(id_perc), cumsum(radical_count_perc))) + geom_line()
+# => Effect here is even greater. See Pareto principle
