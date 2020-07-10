@@ -1,3 +1,4 @@
+from mao.hsk import read_all_hsk_files, add_hsk_level_column
 from mao.kangxi import add_is_kangxi_radical_column, retrieve_unicode_kangxi_table
 from mao.tidy import (
     spread_unihan_dataframe_columns,
@@ -16,6 +17,11 @@ dataframe = create_encoded_columns(dataframe)
 dataframe = split_radical_additional_strokes_column(dataframe)
 kangxi_table = retrieve_unicode_kangxi_table()
 dataframe = add_is_kangxi_radical_column(dataframe, kangxi_table=kangxi_table)
+hsk_table = read_all_hsk_files()
+dataframe = add_hsk_level_column(dataframe, hsk_table=hsk_table)
+dataframe.sort_values(
+    ["hsk_level", "kFrequency", "additional_strokes", "radical"], inplace=True
+)
 
 desired_columns = [
     "glyph",
@@ -33,6 +39,7 @@ desired_columns = [
     "variant_unicode",
     "kTotalStrokes",
     "kFrequency",
+    "hsk_level",
     "kGradeLevel",
     "kMandarin",
     "kHanyuPinlu",
@@ -64,11 +71,7 @@ unihan_file_paths = list_unihan_file_paths()
 unihan_field_name_lists = [read_unihan_field_values(path) for path in unihan_file_paths]
 unihan_field_names = [item for sublist in unihan_field_name_lists for item in sublist]
 remaining = [column for column in unihan_field_names if column not in desired_columns]
-
 all_columns = [*desired_columns, *remaining]
-dataframe = dataframe[desired_columns]
-dataframe.sort_values(["glyph"], inplace=True)
-
 dataframe = dataframe[desired_columns]
 
 dataframe.to_csv("data/unihan.csv", sep="\t", index=False)

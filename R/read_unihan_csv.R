@@ -20,6 +20,7 @@ col_types <- cols(
   variant_unicode = col_character(),
   kTotalStrokes = col_number(),
   kFrequency = col_integer(),
+  hsk_level = col_double(),
   kGradeLevel = col_integer(),
   kMandarin = col_character(),
   kHanyuPinlu = col_character(),
