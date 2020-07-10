@@ -4,13 +4,13 @@ import subprocess
 
 import pandas
 
-from mao.data import get_kangxi_table
+from mao.data import get_kangxi_radicals_table
 
 pandas.set_option("display.max_rows", 500)
 pandas.set_option("display.max_columns", 500)
 pandas.set_option("display.width", 1000)
 
-kangxi_table = get_kangxi_table()
+kangxi_table = get_kangxi_radicals_table()
 
 kangxi_table.columns = kangxi_table.columns.str.replace("_glyph", "")
 

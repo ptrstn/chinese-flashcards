@@ -66,9 +66,7 @@ def retrieve_unicode_kangxi_table(url=UNICODE_KANGXI_URL):
     return dataframe
 
 
-def add_is_kangxi_radical_column(dataframe, kangxi_table=None):
-    if kangxi_table is None:
-        kangxi_table = retrieve_unicode_kangxi_table()
+def add_is_kangxi_radical_column(dataframe, kangxi_table):
     dataframe.loc[:, "is_kangxi_radical"] = dataframe.glyph.isin(
         list(kangxi_table.unified_glyph)
     )
