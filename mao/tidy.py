@@ -91,3 +91,20 @@ def split_radical_additional_strokes_column(dataframe):
     dataframe.additional_strokes = dataframe.additional_strokes.astype(int)
 
     return dataframe
+
+
+def clean_definition(definition):
+    same_as_text = re.findall(r"\(.*U\+[0-9A-F]+.*\)", definition)
+    if same_as_text:
+        definition = definition.lstrip(same_as_text[0])
+    splitted_definition = definition.split(";")
+    clean_definitions = [
+        text.strip()
+        for text in splitted_definition
+        if (
+            not text.strip().lower().startswith("kangxi radical")
+            and not text.strip().lower().startswith("radical")
+            and not text.strip().lower().startswith("rad.")
+        )
+    ]
+    return "; ".join(clean_definitions)

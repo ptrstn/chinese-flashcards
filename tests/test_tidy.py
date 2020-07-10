@@ -5,6 +5,7 @@ from mao.tidy import (
     spread_unihan_dataframe_columns,
     split_radical_additional_strokes_column,
     create_encoded_columns,
+    clean_definition,
 )
 
 
@@ -76,3 +77,24 @@ def test_split_radical_additional_strokes_column():
     assert dataframe.iloc[0]["radical"] == 25
     assert dataframe.iloc[0]["additional_strokes"] == 5
     assert dataframe.iloc[0]["simplified_radical_indicator"] is False
+
+
+def test_clean_definition():
+    definition = "teeth; gears, cogs; age; KangXi radical 211"
+    assert clean_definition(definition) == "teeth; gears, cogs; age"
+    d = "(same as U+3021 HANGZHOU NUMERAL ONE 〡) number one; line; KangXi radical 2"
+    assert clean_definition(d) == "number one; line"
+    definition = "dog; radical number 94 "
+    assert clean_definition(definition) == "dog"
+    definition = "melon, gourd, cucumber; rad. 97 "
+    assert clean_definition(definition) == "melon, gourd, cucumber"
+    definition = "step with left foot; rad. no 60"
+    assert clean_definition(definition) == "step with left foot"
+    definition = "halberd, spear, lance; rad. 62"
+    assert clean_definition(definition) == "halberd, spear, lance"
+    definition = "scallion, leek; radical 179"
+    assert clean_definition(definition) == "scallion, leek"
+    definition = "cow, ox, bull; KangXi radical93"
+    assert clean_definition(definition) == "cow, ox, bull"
+    definition = "factory, workshop; radical 27"
+    assert clean_definition(definition) == "factory, workshop"
