@@ -1,5 +1,6 @@
 [![Actions Status](https://github.com/ptrstn/chinese-flashcards/workflows/Python%20package/badge.svg)](https://github.com/ptrstn/chinese-flashcards/actions)
 [![Build Status](https://travis-ci.com/ptrstn/chinese-flashcards.svg?token=Tp7J85d27M8xhediEsE2&branch=master)](https://travis-ci.com/ptrstn/chinese-flashcards)
+[![codecov](https://codecov.io/gh/ptrstn/chinese-flashcards/branch/master/graph/badge.svg)](https://codecov.io/gh/ptrstn/chinese-flashcards)
 
 # Chinese Flashcards
 
