@@ -187,3 +187,5 @@ data/backups/**
 *.html
 *.csv
 *.apkg
+*.srt
+*.mp3
