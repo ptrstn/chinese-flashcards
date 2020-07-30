@@ -1,8 +1,11 @@
+import pathlib
+
 import pandas
 import requests
 from bs4 import BeautifulSoup
 
 UNICODE_KANGXI_URL = "https://unicode.org/charts/nameslist/n_2F00.html"
+KANGXI_RADICALS_PATH = pathlib.Path("data", "kangxi", "radicals.csv")
 
 
 def _get_kangxi_html_table_soup(url):
@@ -44,6 +47,7 @@ def _extract_unified_glyph(column):
 def _create_kangxi_dataframe(table):
     column_names = ["name", "unicode", "glyph", "unified_unicode", "unified_glyph"]
     dataframe = pandas.DataFrame(columns=column_names)
+    dataframe.index.name = "number"
     rows = table.findAll("tr")
     counter = 1
 
@@ -61,6 +65,7 @@ def _create_kangxi_dataframe(table):
 
 
 def retrieve_unicode_kangxi_table(url=UNICODE_KANGXI_URL):
+    print(f"Downloading Kangxi radicals table from {url}...")
     kangxi_table = _get_kangxi_html_table_soup(url)
     dataframe = _create_kangxi_dataframe(kangxi_table)
     return dataframe
@@ -71,3 +76,36 @@ def add_is_kangxi_radical_column(dataframe, kangxi_table):
         list(kangxi_table.unified_glyph)
     )
     return dataframe
+
+
+def save_kangxi_radicals_table(kangxi_table, path=KANGXI_RADICALS_PATH):
+    print(f"Saving Kangxi radicals table to {path}...")
+    path.parent.mkdir(exist_ok=True, parents=True)
+    kangxi_table.to_csv(path)
+
+
+def load_kangxi_radicals_table(path=KANGXI_RADICALS_PATH):
+    if not pathlib.Path(path).exists():
+        kangxi_table = retrieve_unicode_kangxi_table()
+        save_kangxi_radicals_table(kangxi_table)
+        return kangxi_table
+    else:
+        return pandas.read_csv(path, index_col=0)
+
+
+def unihanify_radical(radical):
+    kangxi_table = load_kangxi_radicals_table()
+    kangxi_table.set_index("glyph", inplace=True)
+    try:
+        return kangxi_table.loc[radical, "unified_glyph"]
+    except KeyError:
+        raise KeyError(f"Ununified radical {radical} does not exist.")
+
+
+def deunihanify_radical(radical):
+    kangxi_table = load_kangxi_radicals_table()
+    kangxi_table.set_index("unified_glyph", inplace=True)
+    try:
+        return kangxi_table.loc[radical, "glyph"]
+    except KeyError:
+        raise KeyError(f"Unified radical {radical} does not exist.")

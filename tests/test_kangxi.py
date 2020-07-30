@@ -2,7 +2,8 @@ import pandas
 import pytest
 
 from mao.constants import NUMBER_OF_KANGXI_RADICALS
-from mao.kangxi import retrieve_unicode_kangxi_table, add_is_kangxi_radical_column
+from mao.kangxi import retrieve_unicode_kangxi_table, add_is_kangxi_radical_column, \
+    unihanify_radical, deunihanify_radical
 from tests.conftest import SKIP_DOWNLOAD_TESTS
 
 
@@ -26,3 +27,25 @@ def test_add_is_kangxi_radical_column():
     dataframe.set_index("glyph", inplace=True)
     assert dataframe.loc["⼀", "is_kangxi_radical"]
     assert not dataframe.loc["𬂛", "is_kangxi_radical"]
+
+
+def test_unihanify_radical():
+    radical = "⾾"
+    unified_radical = unihanify_radical(radical)
+    assert unified_radical == "鬥"
+    assert ord(radical) == 12222
+    assert ord(unified_radical) == 39717
+
+    with pytest.raises(KeyError):
+        unihanify_radical("鬥")
+
+
+def test_deunihanify_radical():
+    unified_radical = "鬥"
+    deunified_radical = deunihanify_radical(unified_radical)
+    assert deunified_radical == "⾾"
+    assert ord(unified_radical) == 39717
+    assert ord(deunified_radical) == 12222
+
+    with pytest.raises(KeyError):
+        deunihanify_radical("⾾")
