@@ -93,6 +93,11 @@ def load_kangxi_radicals_table(path=KANGXI_RADICALS_PATH):
         return pandas.read_csv(path, index_col=0)
 
 
+def load_kangxi_radicals_list(path=KANGXI_RADICALS_PATH):
+    kangxi_table = load_kangxi_radicals_table(path)
+    return list(kangxi_table.unified_glyph)
+
+
 def unihanify_radical(radical):
     kangxi_table = load_kangxi_radicals_table()
     kangxi_table.set_index("glyph", inplace=True)
