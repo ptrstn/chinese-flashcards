@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from mao.kangxi import deunihanify_radical
+from mao.utils import validate_png_file_signature, validate_gif_file_signature
 
 STROKE_ORDER_GIF_FILE_PATTERN = "{glyph}-order.gif"
 STROKE_ORDER_RED_FILE_PATTERN = "{glyph}-red.png"
@@ -49,17 +50,12 @@ def save_content_to_disk(filename, content, path="."):
         print(f"Saved content to {file_path}")
 
 
-def _try_downloading_stroke_order_animation(glyph, path, skip_existing=True):
-    stroke_file_path = pathlib.Path(
-        path, STROKE_ORDER_GIF_FILE_PATTERN.format(glyph=glyph)
-    )
-    if stroke_file_path.exists() and skip_existing:
-        print(f"{stroke_file_path} already exists")
-        return
-
+def _try_downloading_stroke_order_animation(glyph, path):
     try:
         filename_gif, content_gif = download_stroke_order_animation(glyph=glyph)
+        assert validate_gif_file_signature(content_gif)
     except ImageNotFound:
+        # Workaround necessary for glyph '鬥'
         print(f"Couldn't find stroke order for {glyph}. Trying deunihanification...")
         deunihanified_glyph = deunihanify_radical(glyph)
         filename_gif, content_gif = download_stroke_order_animation(
@@ -70,16 +66,10 @@ def _try_downloading_stroke_order_animation(glyph, path, skip_existing=True):
     save_content_to_disk(filename=filename_gif, content=content_gif, path=path)
 
 
-def _try_downloading_stroke_order_red(glyph, path, skip_existing=True):
-    stroke_file_path = pathlib.Path(
-        path, STROKE_ORDER_RED_FILE_PATTERN.format(glyph=glyph)
-    )
-    if stroke_file_path.exists() and skip_existing:
-        print(f"{stroke_file_path} already exists")
-        return
-
+def _try_downloading_stroke_order_red(glyph, path):
     try:
         filename_red, content_red = download_stroke_order_red(glyph=glyph)
+        assert validate_png_file_signature(content_red)
         save_content_to_disk(filename=filename_red, content=content_red, path=path)
     except requests.exceptions.HTTPError as e:
         warnings.warn(str(e))
@@ -87,8 +77,19 @@ def _try_downloading_stroke_order_red(glyph, path, skip_existing=True):
         print("Error: No internet connection")
 
 
-def download_glyph_strokes_to_disk(glyphs, path):
+def check_glyph_file_exists(glyph, path):
+    order_filename = STROKE_ORDER_GIF_FILE_PATTERN.format(glyph=glyph)
+    red_filename = STROKE_ORDER_RED_FILE_PATTERN.format(glyph=glyph)
+    order_path = pathlib.Path(path, order_filename)
+    red_path = pathlib.Path(path, red_filename)
+    return order_path.exists() or red_path.exists()
+
+
+def download_glyph_strokes_to_disk(glyphs, path, skip_exists=True):
     for idx, glyph in enumerate(glyphs):
-        print(f"Downloading stroke order for '{glyph}' {idx + 1}/{len(glyphs)}...")
-        _try_downloading_stroke_order_animation(glyph, path)
-        _try_downloading_stroke_order_red(glyph, path)
+        if skip_exists and check_glyph_file_exists(glyph, path):
+            print(f"{glyph} stroke order files already exists")
+        else:
+            print(f"Downloading stroke order for '{glyph}' {idx + 1}/{len(glyphs)}...")
+            _try_downloading_stroke_order_animation(glyph, path)
+            _try_downloading_stroke_order_red(glyph, path)
