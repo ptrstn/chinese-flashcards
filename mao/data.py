@@ -1,7 +1,11 @@
 import pandas
 
 from mao.hsk import read_all_hsk_files, add_hsk_level_column
-from mao.kangxi import retrieve_unicode_kangxi_table, add_is_kangxi_radical_column
+from mao.kangxi import (
+    retrieve_unicode_kangxi_table,
+    add_is_kangxi_radical_column,
+    load_kangxi_radicals_table,
+)
 from mao.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
@@ -48,7 +52,7 @@ def load_radicals_dataframe():
     dataframe = spread_unihan_dataframe_columns(dataframe)
     dataframe = create_encoded_columns(dataframe)
     dataframe = split_radical_additional_strokes_column(dataframe)
-    kangxi_table = retrieve_unicode_kangxi_table()
+    kangxi_table = load_kangxi_radicals_table()
     dataframe = add_is_kangxi_radical_column(dataframe, kangxi_table=kangxi_table)
     hsk_table = read_all_hsk_files()
     dataframe = add_hsk_level_column(dataframe, hsk_table=hsk_table)
