@@ -9,6 +9,7 @@ DEDICT_URL = "https://raw.githubusercontent.com/gugray/HanDeDict/master/handedic
 DEDICT_BASE_PATH = pathlib.Path("data", "dedict")
 DEDICT_PATH = pathlib.Path(DEDICT_BASE_PATH, "handedict.u8")
 DEDICT_FEATHER_PATH = pathlib.Path(DEDICT_BASE_PATH, "handedict.feather")
+DEDICT_FEATHER_FILE_NAME = "dedict.feather"
 
 
 def download_handedict(base_path=DEDICT_BASE_PATH, url=DEDICT_URL, quiet=False):
@@ -33,13 +34,14 @@ def _read_dedict_u8(path):
     return df[["traditional", "simplified", "pinyin", "german"]]
 
 
-def load_dedict(path=DEDICT_PATH, feather_path=DEDICT_FEATHER_PATH):
+def load_dedict(path=DEDICT_PATH):
+    feather_path = pathlib.Path(path.parent, DEDICT_FEATHER_FILE_NAME)
     try:
         return pandas.read_feather(feather_path)
     except FileNotFoundError:
         if not pathlib.Path(path).exists():
             download_handedict()
         df = _read_dedict_u8(path)
-        print(f"Saving dedict Dataframe in Feather format to {feather_path}...")
+        print(f"Saving DEDICT DataFrame in Feather format to {feather_path}...")
         df.to_feather(feather_path)
         return df

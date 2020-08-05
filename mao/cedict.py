@@ -7,7 +7,7 @@ from mao.utils import download_file, extract_zip
 CEDICT_URL = "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip"
 CEDICT_BASE_PATH = pathlib.Path("data", "cedict")
 CEDICT_PATH = pathlib.Path(CEDICT_BASE_PATH, "cedict_ts.u8")
-CEDICT_FEATHER_PATH = pathlib.Path(CEDICT_BASE_PATH, "cedict.feather")
+CEDICT_FEATHER_FILE_NAME = "cedict.feather"
 
 
 def download_cedict_zip(base_path=CEDICT_BASE_PATH, url=CEDICT_URL, quiet=False):
@@ -33,13 +33,14 @@ def _read_cedict_u8(path):
     return dataframe[["traditional", "simplified", "pinyin", "english"]]
 
 
-def load_cedict(path=CEDICT_PATH, feather_path=CEDICT_FEATHER_PATH):
+def load_cedict(path=CEDICT_PATH):
+    feather_path = pathlib.Path(path.parent, CEDICT_FEATHER_FILE_NAME)
     try:
         return pandas.read_feather(feather_path)
     except FileNotFoundError:
         if not pathlib.Path(path).exists():
             download_cedict_zip()
         df = _read_cedict_u8(path)
-        print(f"Saving dedict Dataframe in Feather format to {feather_path}...")
+        print(f"Saving CEDICT DataFrame in Feather format to {feather_path}...")
         df.to_feather(feather_path)
         return df
