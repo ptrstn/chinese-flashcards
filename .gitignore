@@ -183,6 +183,7 @@ vignettes/*.pdf
 .Rproj.user
 data/documents/**
 data/unihan/**
+data/cedict/**
 data/backups/**
 *.html
 *.csv
