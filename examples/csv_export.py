@@ -6,12 +6,12 @@ from mao.tidy import (
     split_radical_additional_strokes_column,
 )
 from mao.unihan import (
-    read_all_unihan_files,
     list_unihan_file_paths,
     read_unihan_field_values,
+    load_unihan,
 )
 
-dataframe = read_all_unihan_files()
+dataframe = load_unihan()
 dataframe = spread_unihan_dataframe_columns(dataframe)
 dataframe = create_encoded_columns(dataframe)
 dataframe = split_radical_additional_strokes_column(dataframe)

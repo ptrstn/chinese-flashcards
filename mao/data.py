@@ -12,11 +12,11 @@ from mao.tidy import (
     split_radical_additional_strokes_column,
     clean_definition,
 )
-from mao.unihan import read_all_unihan_files, UNIHAN_BASE_PATH
+from mao.unihan import UNIHAN_BASE_PATH, load_unihan
 
 
 def get_kangxi_radicals_table(unihan_base_path=UNIHAN_BASE_PATH):
-    df = read_all_unihan_files(unihan_base_path)
+    df = load_unihan(unihan_base_path)
     df = spread_unihan_dataframe_columns(df)
     df = create_encoded_columns(df)
     df = split_radical_additional_strokes_column(df)
@@ -48,7 +48,7 @@ def get_kangxi_radicals_table(unihan_base_path=UNIHAN_BASE_PATH):
 
 
 def load_radicals_dataframe():
-    dataframe = read_all_unihan_files()
+    dataframe = load_unihan()
     dataframe = spread_unihan_dataframe_columns(dataframe)
     dataframe = create_encoded_columns(dataframe)
     dataframe = split_radical_additional_strokes_column(dataframe)
