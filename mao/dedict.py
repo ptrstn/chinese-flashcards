@@ -5,10 +5,10 @@ import pandas
 from mao.cedict import split_hanzi_pinyin_column
 from mao.utils import download_file
 
+DEDICT_URL = "https://raw.githubusercontent.com/gugray/HanDeDict/master/handedict.u8"
 DEDICT_BASE_PATH = pathlib.Path("data", "dedict")
 DEDICT_PATH = pathlib.Path(DEDICT_BASE_PATH, "handedict.u8")
 DEDICT_FEATHER_PATH = pathlib.Path(DEDICT_BASE_PATH, "handedict.feather")
-DEDICT_URL = "https://raw.githubusercontent.com/gugray/HanDeDict/master/handedict.u8"
 
 
 def download_handedict(base_path=DEDICT_BASE_PATH, url=DEDICT_URL, quiet=False):

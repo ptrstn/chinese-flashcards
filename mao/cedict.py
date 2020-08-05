@@ -4,15 +4,13 @@ import pandas
 
 from mao.utils import download_file, extract_zip
 
-CEDICT_ZIP_URL = (
-    "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip"
-)
+CEDICT_URL = "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip"
 CEDICT_BASE_PATH = pathlib.Path("data", "cedict")
 CEDICT_PATH = pathlib.Path(CEDICT_BASE_PATH, "cedict_ts.u8")
 CEDICT_FEATHER_PATH = pathlib.Path(CEDICT_BASE_PATH, "cedict.feather")
 
 
-def download_cedict_zip(base_path=CEDICT_BASE_PATH, url=CEDICT_ZIP_URL, quiet=False):
+def download_cedict_zip(base_path=CEDICT_BASE_PATH, url=CEDICT_URL, quiet=False):
     file_name = pathlib.Path(url).name
     file_path = pathlib.Path(base_path, file_name)
     download_file(url, file_path, quiet)
