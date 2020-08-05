@@ -2,8 +2,12 @@ import pandas
 import pytest
 
 from mao.constants import NUMBER_OF_KANGXI_RADICALS
-from mao.kangxi import retrieve_unicode_kangxi_table, add_is_kangxi_radical_column, \
-    unihanify_radical, deunihanify_radical
+from mao.kangxi import (
+    retrieve_unicode_kangxi_table,
+    add_is_kangxi_radical_column,
+    unihanify_radical,
+    deunihanify_radical,
+)
 from tests.conftest import SKIP_DOWNLOAD_TESTS
 
 
