@@ -192,3 +192,6 @@ data/backups/**
 *.mp3
 *.png
 *.gif
+*.feather
+*.u8
+*.zip

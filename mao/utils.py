@@ -1,3 +1,8 @@
+from zipfile import ZipFile
+
+import requests
+
+
 def validate_png_file_signature(byte_content):
     """
     Checks if the PNG file signature is valid.
@@ -18,3 +23,19 @@ def validate_png_file_signature(byte_content):
 
 def validate_gif_file_signature(byte_content):
     return byte_content[:6] == b"GIF89a"
+
+
+def download_file(url, download_to_path, quiet=False):
+    if not quiet:
+        print(f"Downloading {url} to {download_to_path}...")
+    response = requests.get(url, allow_redirects=True)
+    download_to_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(download_to_path, "wb") as file:
+        file.write(response.content)
+
+
+def extract_zip(zip_file_path, extract_to_path, quiet=False):
+    if not quiet:
+        print(f"Extracting {zip_file_path} to {extract_to_path}...")
+    with ZipFile(zip_file_path, "r") as zip_file:
+        zip_file.extractall(extract_to_path)
