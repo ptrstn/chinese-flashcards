@@ -9,7 +9,7 @@ KANGXI_RADICALS_PATH = pathlib.Path("data", "kangxi", "radicals.csv")
 
 
 def _get_kangxi_html_table_soup(url):
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     html = response.text
     soup = BeautifulSoup(html, "html.parser")
     return soup.find("table")
