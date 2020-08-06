@@ -1,6 +1,7 @@
 from zipfile import ZipFile
 
 import requests
+from requests.exceptions import SSLError
 
 
 def validate_png_file_signature(byte_content):
@@ -28,7 +29,10 @@ def validate_gif_file_signature(byte_content):
 def download_file(url, download_to_path, quiet=False):
     if not quiet:
         print(f"Downloading {url} to {download_to_path}...")
-    response = requests.get(url, allow_redirects=True, verify=False)
+    try:
+        response = requests.get(url, allow_redirects=True)
+    except SSLError:
+        response = requests.get(url, allow_redirects=True, verify=False)
     download_to_path.parent.mkdir(parents=True, exist_ok=True)
     with open(download_to_path, "wb") as file:
         file.write(response.content)

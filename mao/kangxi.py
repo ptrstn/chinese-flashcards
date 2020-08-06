@@ -3,13 +3,17 @@ import pathlib
 import pandas
 import requests
 from bs4 import BeautifulSoup
+from requests.exceptions import SSLError
 
 UNICODE_KANGXI_URL = "https://unicode.org/charts/nameslist/n_2F00.html"
 KANGXI_RADICALS_PATH = pathlib.Path("data", "kangxi", "radicals.csv")
 
 
 def _get_kangxi_html_table_soup(url):
-    response = requests.get(url, verify=False)
+    try:
+        response = requests.get(url)
+    except SSLError:
+        response = requests.get(url, verify=False)
     html = response.text
     soup = BeautifulSoup(html, "html.parser")
     return soup.find("table")
