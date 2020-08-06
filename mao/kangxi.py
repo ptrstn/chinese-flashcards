@@ -49,7 +49,13 @@ def _extract_unified_glyph(column):
 
 
 def _create_kangxi_dataframe(table):
-    column_names = ["name", "unicode", "glyph", "unified_unicode", "unified_glyph"]
+    column_names = [
+        "radical_name",
+        "unicode",
+        "glyph",
+        "unified_unicode",
+        "unified_glyph",
+    ]
     dataframe = pandas.DataFrame(columns=column_names)
     dataframe.index.name = "number"
     rows = table.findAll("tr")
@@ -57,7 +63,7 @@ def _create_kangxi_dataframe(table):
 
     for row in rows:
         if row.find("a"):
-            dataframe.loc[counter, "name"] = _extract_kangxi_radical_name(row)
+            dataframe.loc[counter, "radical_name"] = _extract_kangxi_radical_name(row)
             dataframe.loc[counter, "unicode"] = _extract_kangxi_radical_unicode(row)
             dataframe.loc[counter, "glyph"] = _extract_kangxi_radical_glyph(row)
         elif row.find(text="≈"):

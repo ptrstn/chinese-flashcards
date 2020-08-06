@@ -23,7 +23,7 @@ css = """.card {
 }
 
 .description{
-    color: Grey;
+    color: Gray;
 }
 
 .hanzi {
@@ -46,6 +46,12 @@ css = """.card {
 .definition {
     color: MidnightBlue;
     font-size: 50px;
+}
+
+.radical-number{
+    margin-top: 10px;
+    color: Grey;
+    font-size: 25px;
 }
 
 .variant {
@@ -83,7 +89,11 @@ back_formatting_1 = """{{FrontSide}}
 <hr id="answer">
 
 <div class="definition">
-    {{Definition}}
+    {{Name}}
+</div>
+
+<div class="radical-number">
+    Radical {{Number}}
 </div>
 """
 
@@ -128,7 +138,11 @@ back_formatting_3 = """{{FrontSide}}
 <hr id="answer">
 
 <div class="definition">
-    {{Definition}}
+    {{Name}}
+</div>
+
+<div class="radical-number">
+    Radical {{Number}}
 </div>
 
 <div class="hanzi">
@@ -198,6 +212,8 @@ my_model = genanki.Model(
         {"name": "Pinyin"},
         {"name": "Simplified"},
         {"name": "Traditional"},
+        {"name": "Number"},
+        {"name": "Name"},
     ],
     templates=[
         {"name": "Card 1", "qfmt": front_formatting_1, "afmt": back_formatting_1},
@@ -215,6 +231,8 @@ print("Iterating rows...")
 for index, row in radicals_df.iterrows():
     glyph = row.glyph
     definition = row.definition
+    radical_name = row.radical_name
+    number = row.radical
     simplified_glyph = row.simplified_glyph if row.simplified_glyph != glyph else ""
     traditional_glyph = row.traditional_glyph if row.traditional_glyph != glyph else ""
     variant = "".join(
@@ -232,6 +250,7 @@ for index, row in radicals_df.iterrows():
     )
     stroke_order = f'<img src="{glyph}-order.gif">'
     pinyin = row.kMandarin
+
     my_note = genanki.Note(
         model=my_model,
         fields=[
@@ -244,6 +263,8 @@ for index, row in radicals_df.iterrows():
             pinyin,
             simplified_glyph,
             traditional_glyph,
+            str(number),
+            radical_name,
         ],
     )
     my_deck.add_note(my_note)
