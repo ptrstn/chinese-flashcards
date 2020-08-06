@@ -231,8 +231,8 @@ print("Iterating rows...")
 for index, row in radicals_df.iterrows():
     glyph = row.glyph
     definition = row.definition
-    meaning = row.meaning
-    number = row.radical
+    meaning = row.meaning.lower()
+    number = str(row.radical)
     simplified_glyph = row.simplified_glyph if row.simplified_glyph != glyph else ""
     traditional_glyph = row.traditional_glyph if row.traditional_glyph != glyph else ""
     variant = "".join(
@@ -263,7 +263,7 @@ for index, row in radicals_df.iterrows():
             pinyin,
             simplified_glyph,
             traditional_glyph,
-            str(number),
+            number,
             meaning,
         ],
     )
