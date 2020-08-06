@@ -1,3 +1,5 @@
+import pathlib
+
 from google.cloud import texttospeech
 
 CHINESE_VOICE_NAMES = [
@@ -39,6 +41,8 @@ class ChineseTTSClient(GoogleTTSClient):
 
 
 def save_speech_response(response, filename):
-    with open(filename, "wb") as file:
+    filepath = pathlib.Path(filename)
+    filepath.parent.mkdir(exist_ok=True, parents=True)
+    with open(filepath, "wb") as file:
         file.write(response.audio_content)
         print(f'Audio content written to file "{filename}"')

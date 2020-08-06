@@ -27,5 +27,11 @@ setup(
     author="Peter Stein",
     license="MIT",
     packages=["mao"],
-    install_requires=["requests", "beautifulsoup4", "pandas", "pyarrow"],
+    install_requires=[
+        "requests",
+        "beautifulsoup4",
+        "pandas",
+        "pyarrow",
+        "google-cloud-texttospeech",
+    ],
 )
