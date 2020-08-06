@@ -22,8 +22,16 @@ css = """.card {
     margin: 10px;
 }
 
+.description{
+    color: Grey;
+}
+
 .hanzi {
     font-size: 150px;
+}
+
+.hanzi2 {
+    font-size: 100px;
 }
 
 .pinyin {
@@ -31,11 +39,14 @@ css = """.card {
     font-size: 40px;
 }
 
+.pinyin2 {
+    font-size: 60px;
+}
+
 .definition {
     color: MidnightBlue;
     font-size: 50px;
 }
-
 
 .variant {
     font-size: 17px;
@@ -57,12 +68,62 @@ css = """.card {
     color: PaleVioletRed;
 }"""
 
-front_formatting = """<div class="hanzi">
+front_formatting_1 = """<div class="description">
+    Definition of
+</div>
+
+<div class="hanzi">
+    {{Glyph}}
+</div>
+
+"""
+
+back_formatting_1 = """{{FrontSide}}
+
+<hr id="answer">
+
+<div class="definition">
+    {{Definition}}
+</div>
+"""
+
+
+front_formatting_2 = """<div class="description">
+    Pinyin of
+</div>
+
+<div class="hanzi">
     {{Glyph}}
 </div>
 """
 
-back_formatting = """{{FrontSide}}
+back_formatting_2 = """{{FrontSide}}
+
+<hr id="answer">
+
+<div>
+    <span class="pinyin2"> {{Pinyin}} </span>
+</div>
+
+<div>
+    {{Voice}}
+</div>
+"""
+
+front_formatting_3 = """<div class="description">
+    Definition of<br><br>
+</div>
+
+<div>
+    <span class="pinyin2"> {{Pinyin}} </span>
+</div>
+
+<div>
+    {{Voice}}
+</div>
+"""
+
+back_formatting_3 = """{{FrontSide}}
 
 <hr id="answer">
 
@@ -70,22 +131,36 @@ back_formatting = """{{FrontSide}}
     {{Definition}}
 </div>
 
+<div class="hanzi">
+    {{Glyph}}
+</div>
+"""
+
+front_formatting_4 = """<div class="description">
+    Hanzi of<br><br>
+</div>
+
 <div>
-    {{#Stroke red}} {{Stroke red}} {{/Stroke red}}
-    {{#Stroke order}} {{Stroke order}} {{/Stroke order}}<br>
-    <span class="pinyin"> {{Pinyin}} </span>
+    <span class="pinyin2"> {{Pinyin}} </span>
 </div>
 
 <div>
     {{Voice}}
 </div>
+"""
 
-{{#Variant}}
-<div="variant">
-    <span class="variant DarkSlateGray">Variants: </span>
-    <span class="variant-glyph DarkSlateGray">{{Variant}}</span>
+back_formatting_4 = """{{FrontSide}}
+
+<hr id="answer">
+
+<div>
+    {{#Stroke red}} {{Stroke red}} {{/Stroke red}}
+    {{#Stroke order}} {{Stroke order}} {{/Stroke order}}<br>
 </div>
-{{/Variant}}
+
+<div class="hanzi2">
+    {{Glyph}}
+</div>
 
 {{#Simplified}}
 <div="variant">
@@ -100,6 +175,13 @@ back_formatting = """{{FrontSide}}
     <span class="variant-glyph PaleVioletRed">{{Traditional}}</span>
 </div>
 {{/Traditional}}
+
+{{#Variant}}
+<div="variant">
+    <span class="variant DarkSlateGray">Variants: </span>
+    <span class="variant-glyph DarkSlateGray">{{Variant}}</span>
+</div>
+{{/Variant}}
 """
 
 print("Creating Anki model...")
@@ -117,7 +199,12 @@ my_model = genanki.Model(
         {"name": "Simplified"},
         {"name": "Traditional"},
     ],
-    templates=[{"name": "Card 1", "qfmt": front_formatting, "afmt": back_formatting}],
+    templates=[
+        {"name": "Card 1", "qfmt": front_formatting_1, "afmt": back_formatting_1},
+        {"name": "Card 2", "qfmt": front_formatting_2, "afmt": back_formatting_2},
+        {"name": "Card 3", "qfmt": front_formatting_3, "afmt": back_formatting_3},
+        {"name": "Card 4", "qfmt": front_formatting_4, "afmt": back_formatting_4},
+    ],
     css=css,
 )
 
