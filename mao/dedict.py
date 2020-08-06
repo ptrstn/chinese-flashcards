@@ -35,12 +35,13 @@ def _read_dedict_u8(path):
 
 
 def load_dedict(path=DEDICT_PATH):
+    path = pathlib.Path(path)
     feather_path = pathlib.Path(path.parent, DEDICT_FEATHER_FILE_NAME)
     try:
         return pandas.read_feather(feather_path)
     except FileNotFoundError:
         if not pathlib.Path(path).exists():
-            download_handedict()
+            download_handedict(path.parent)
         df = _read_dedict_u8(path)
         print(f"Saving DEDICT DataFrame in Feather format to {feather_path}...")
         df.to_feather(feather_path)

@@ -34,12 +34,13 @@ def _read_cedict_u8(path):
 
 
 def load_cedict(path=CEDICT_PATH):
+    path = pathlib.Path(path)
     feather_path = pathlib.Path(path.parent, CEDICT_FEATHER_FILE_NAME)
     try:
         return pandas.read_feather(feather_path)
     except FileNotFoundError:
         if not pathlib.Path(path).exists():
-            download_cedict_zip()
+            download_cedict_zip(path.parent)
         df = _read_cedict_u8(path)
         print(f"Saving CEDICT DataFrame in Feather format to {feather_path}...")
         df.to_feather(feather_path)
