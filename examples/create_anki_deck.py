@@ -48,6 +48,12 @@ css = """.card {
     font-size: 50px;
 }
 
+.german-meaning {
+    margin: 20px;
+    color: LightSlateGray;
+    font-size: 30px;
+}
+
 .radical-number{
     margin-top: 10px;
     color: Grey;
@@ -94,6 +100,10 @@ back_formatting_1 = """{{FrontSide}}
 
 <div class="radical-number">
     Radical {{Number}}
+</div>
+
+<div class="german-meaning">
+    {{German meaning}}
 </div>
 """
 
@@ -143,6 +153,10 @@ back_formatting_3 = """{{FrontSide}}
 
 <div class="radical-number">
     Radical {{Number}}
+</div>
+
+<div class="german-meaning">
+    {{German meaning}}
 </div>
 
 <div class="hanzi">
@@ -214,6 +228,7 @@ my_model = genanki.Model(
         {"name": "Traditional"},
         {"name": "Number"},
         {"name": "Meaning"},
+        {"name": "German meaning"},
     ],
     templates=[
         {"name": "Card 1", "qfmt": front_formatting_1, "afmt": back_formatting_1},
@@ -232,6 +247,7 @@ for index, row in radicals_df.iterrows():
     glyph = row.glyph
     definition = row.definition
     meaning = row.meaning.lower()
+    german_meaning = row.meaning_german
     number = str(row.radical)
     simplified_glyph = row.simplified_glyph if row.simplified_glyph != glyph else ""
     traditional_glyph = row.traditional_glyph if row.traditional_glyph != glyph else ""
@@ -265,6 +281,7 @@ for index, row in radicals_df.iterrows():
             traditional_glyph,
             number,
             meaning,
+            german_meaning,
         ],
     )
     my_deck.add_note(my_note)

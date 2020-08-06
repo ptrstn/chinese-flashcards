@@ -81,10 +81,28 @@ def load_radicals_dataframe():
     radicals_df[["kFrequency"]] = radicals_df[["kFrequency"]].fillna(value=9)
     radicals_df.kFrequency = radicals_df.kFrequency.astype("int")
 
+    german_radicals = pandas.read_csv("data/kangxi/radikale.csv")
+    german_radicals.columns = [
+        "number",
+        "glyph_variants",
+        "pinyin",
+        "meaning_german",
+        "frequency",
+        "abbreviation",
+        "examples",
+    ]
+
+    german_radicals = german_radicals[["number", "meaning_german"]]
+
+    radicals_df = pandas.merge(
+        radicals_df, german_radicals, left_on="radical", right_on="number",
+    )
+
     radicals_df = radicals_df[
         [
             "glyph",
             "meaning",
+            "meaning_german",
             "definition",
             "kMandarin",
             "variant_glyph",
