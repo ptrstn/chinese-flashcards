@@ -1,14 +1,12 @@
 import collections
 
-import pytest
-from google.auth.exceptions import DefaultCredentialsError
-
 from mao.tts import ChineseTTSClient, save_speech_response
 
 
 def test_tts():
-    with pytest.raises(DefaultCredentialsError):
-        ChineseTTSClient()
+    client = ChineseTTSClient()
+    response = client.speak_chinese("女")
+    assert response
 
 
 def test_save_speech_response():
