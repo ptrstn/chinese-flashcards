@@ -43,7 +43,7 @@ css = """.card {
     font-size: 60px;
 }
 
-.definition {
+.meaning {
     color: MidnightBlue;
     font-size: 50px;
 }
@@ -75,7 +75,7 @@ css = """.card {
 }"""
 
 front_formatting_1 = """<div class="description">
-    Definition of
+    Meaning of
 </div>
 
 <div class="hanzi">
@@ -88,8 +88,8 @@ back_formatting_1 = """{{FrontSide}}
 
 <hr id="answer">
 
-<div class="definition">
-    {{Name}}
+<div class="meaning">
+    {{Meaning}}
 </div>
 
 <div class="radical-number">
@@ -121,7 +121,7 @@ back_formatting_2 = """{{FrontSide}}
 """
 
 front_formatting_3 = """<div class="description">
-    Definition of<br><br>
+    Meaning of<br><br>
 </div>
 
 <div>
@@ -137,8 +137,8 @@ back_formatting_3 = """{{FrontSide}}
 
 <hr id="answer">
 
-<div class="definition">
-    {{Name}}
+<div class="meaning">
+    {{Meaning}}
 </div>
 
 <div class="radical-number">
@@ -213,7 +213,7 @@ my_model = genanki.Model(
         {"name": "Simplified"},
         {"name": "Traditional"},
         {"name": "Number"},
-        {"name": "Name"},
+        {"name": "Meaning"},
     ],
     templates=[
         {"name": "Card 1", "qfmt": front_formatting_1, "afmt": back_formatting_1},
@@ -231,7 +231,7 @@ print("Iterating rows...")
 for index, row in radicals_df.iterrows():
     glyph = row.glyph
     definition = row.definition
-    radical_name = row.radical_name
+    meaning = row.meaning
     number = row.radical
     simplified_glyph = row.simplified_glyph if row.simplified_glyph != glyph else ""
     traditional_glyph = row.traditional_glyph if row.traditional_glyph != glyph else ""
@@ -264,7 +264,7 @@ for index, row in radicals_df.iterrows():
             simplified_glyph,
             traditional_glyph,
             str(number),
-            radical_name,
+            meaning,
         ],
     )
     my_deck.add_note(my_note)

@@ -72,7 +72,7 @@ def load_radicals_dataframe():
 
     radicals_df = pandas.merge(
         radicals_df,
-        kangxi_table[["unified_glyph", "radical_name"]],
+        kangxi_table[["unified_glyph", "meaning"]],
         left_on="glyph",
         right_on="unified_glyph",
     )
@@ -84,7 +84,7 @@ def load_radicals_dataframe():
     radicals_df = radicals_df[
         [
             "glyph",
-            "radical_name",
+            "meaning",
             "definition",
             "kMandarin",
             "variant_glyph",
