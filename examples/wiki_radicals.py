@@ -103,7 +103,7 @@ print("Inconsistent variants:")
 variants = df[df.variant_german != df.variant_english][
     ["variant_german", "variant_english"]
 ]
-print(variants[~variants.variant_german.isna()])
+print(variants[(~variants.variant_german.isna()) | (~variants.variant_english.isna())])
 
 print("Inconsistent examples:")
 examples = df[df.examples_german != df.examples_english][
@@ -116,3 +116,13 @@ frequencies = df[df.frequency_german != df.frequency_english][
     ["frequency_german", "frequency_english"]
 ]
 print(frequencies)
+
+print("Inconsistent simplified:")
+simplified = df[df.simplified_german != df.simplified_english][
+    ["simplified_german", "simplified_english"]
+]
+print(
+    simplified[
+        (~simplified.simplified_german.isna()) | (~simplified.simplified_english.isna())
+    ]
+)
