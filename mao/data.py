@@ -81,7 +81,9 @@ def load_radicals_dataframe():
     radicals_df[["kFrequency"]] = radicals_df[["kFrequency"]].fillna(value=9)
     radicals_df.kFrequency = radicals_df.kFrequency.astype("int")
 
-    german_radicals = pandas.read_csv("data/kangxi/radikale.csv")
+    german_radicals = pandas.read_csv(
+        "data/kangxi/wiki_radikale_german.csv", thousands="."
+    )
     german_radicals.columns = [
         "number",
         "glyph_variants",
