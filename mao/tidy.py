@@ -1,5 +1,6 @@
 import re
 
+import numpy
 import pandas
 
 from mao.unicode import encode_unicode_character, encode_unicode_characters
@@ -108,3 +109,21 @@ def clean_definition(definition):
         )
     ]
     return "; ".join(clean_definitions)
+
+
+def determine_radical_by_row(row):
+    if not pandas.isna(row.kangxi_additional) and row.kangxi_additional == 0:
+        return row.kangxi_radical
+    if row.additional_strokes == 0:
+        return row.radical
+    if number := capture_radical_number(row.kDefinition):
+        return number
+    return numpy.nan
+
+
+def capture_radical_number(string):
+    if match := re.search(r"radical (?:number )?(\d+)", string):
+        return int(match.group(1))
+    if match := re.search(r"rad\.? (?:no\.? )?(\d+)", string):
+        return int(match.group(1))
+    return numpy.nan

@@ -1,11 +1,16 @@
+from unittest import mock
+
 import numpy
 import pandas
+from pandas._libs.missing import NAType
 
 from mao.tidy import (
     spread_unihan_dataframe_columns,
     split_radical_additional_strokes_column,
     create_encoded_columns,
     clean_definition,
+    determine_radical_by_row,
+    capture_radical_number,
 )
 
 
@@ -98,3 +103,66 @@ def test_clean_definition():
     assert clean_definition(definition) == "cow, ox, bull"
     definition = "factory, workshop; radical 27"
     assert clean_definition(definition) == "factory, workshop"
+
+
+def test_determine_radical_by_row():
+    row = mock.Mock()
+
+    row.kangxi_radical = 13
+    row.kangxi_additional = 0
+    row.radical = 13
+    row.additional_strokes = 0
+    row.kDefinition = "Blubb"
+    assert determine_radical_by_row(row) == 13
+
+    row.kangxi_radical = 13
+    row.kangxi_additional = 1
+    row.radical = 12
+    row.additional_strokes = 0
+    row.kDefinition = "Blubb"
+    assert determine_radical_by_row(row) == 12
+
+    row.kangxi_radical = 13
+    row.kangxi_additional = 1
+    row.radical = 12
+    row.additional_strokes = 4
+    row.kDefinition = "Blubb"
+    assert pandas.isna(determine_radical_by_row(row))
+
+    row.kangxi_radical = numpy.nan
+    row.kangxi_additional = numpy.nan
+    row.radical = 7
+    row.additional_strokes = 0
+    row.kDefinition = "Blubb"
+    assert determine_radical_by_row(row) == 7
+
+    row.kangxi_radical = 1
+    row.kangxi_additional = 4
+    row.radical = 1
+    row.additional_strokes = 4
+    row.kDefinition = "profession, business; GB radical 111 "
+    assert determine_radical_by_row(row) == 111
+
+    row.kangxi_radical = 128
+    row.kangxi_additional = -2
+    row.radical = 128
+    row.additional_strokes = -2
+    row.kDefinition = "pen; radical number 129 "
+    assert determine_radical_by_row(row) == 129
+
+    row.kangxi_radical = NAType()
+    row.kangxi_additional = NAType()
+    row.radical = 1
+    row.additional_strokes = 0
+    row.kDefinition = "Gongche character yi with downward slash"
+    assert determine_radical_by_row(row) == 1
+
+
+def test_capture_radical_number():
+    assert capture_radical_number("profession, business; GB radical 111") == 111
+    assert capture_radical_number("pen; radical number 129") == 129
+    assert capture_radical_number("page, sheet, leaf; rad. no. 181") == 181
+    assert capture_radical_number("step with left foot; rad. no 60") == 60
+    assert capture_radical_number("do not; not; surname; rad. 80") == 80
+    assert pandas.isna(capture_radical_number("Gongche character yi with slash"))
+    assert pandas.isna(numpy.nan)
