@@ -5,6 +5,7 @@ from mao.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
     split_radical_additional_strokes_column,
+    determine_radical_by_row,
 )
 from mao.unihan import load_unihan
 
@@ -136,7 +137,7 @@ radicals = df[
             r"radical (?:number )?\d|rad\.? (?:no\.? )?\d", case=False, na=False
         )
     )
-]
+].copy()
 
 radicals = radicals.sort_values(["radical", "kangxi_radical"])
 
@@ -145,8 +146,84 @@ radicals = radicals.sort_values(["radical", "kangxi_radical"])
 ####################################################
 
 inconsistent_radicals = radicals[(radicals.kangxi_radical != radicals.radical)]
+
+inconsistent_additional = radicals[
+    (radicals.kangxi_radical == radicals.radical)
+    & (radicals.kangxi_additional != radicals.additional_strokes)
+]
+
+inconsistents = radicals[
+    (radicals.kangxi_radical != radicals.radical)
+    | (radicals.kangxi_additional != radicals.additional_strokes)
+]
+
 inconsistent_missing_radicals = radicals[
-    (radicals.kangxi_radical != radicals.radical) | (radicals.kangxi_radical.isna())
+    (radicals.kangxi_radical != radicals.radical)
+    | (radicals.kangxi_additional != radicals.additional_strokes)
+    | (radicals.kangxi_radical.isna())
 ]
 
 # 㔾
+
+####################################################
+# Assigning radical number field to rows
+####################################################
+
+print(f"Number of rows in radicals dataframe: {len(radicals)}")
+print(f"Unique glyphs in radicals dataframe: {len(set(radicals.glyph))}")
+
+all_radical_glyphs = set(
+    list(radicals.glyph)
+    + list(radicals.traditional_glyph)
+    + list(radicals.simplified_glyph)
+    + list(radicals.variant_glyph)
+)
+
+all_radical_glyphs = [glyph for glyph in all_radical_glyphs if not pandas.isna(glyph)]
+
+all_radical_glyphs = [
+    glyph for text in all_radical_glyphs for glyph in text if glyph != " "
+]
+
+all_radical_glyphs = sorted(set(all_radical_glyphs))
+
+print(f"Total number of radical glyphs: {len(all_radical_glyphs)}")
+
+all_df = df[df.glyph.isin(all_radical_glyphs)]
+
+# def determine_radical(row):
+#     if row.kangxi_additional == 0:
+#         return row.kangxi_radical
+#     if row.additional_strokes == 0:
+#         return row.radical
+#     return numpy.nan
+
+radicals[:, "radical_number"] = radicals.apply(
+    lambda row: determine_radical_by_row(row), axis=1
+)
+
+radicals.sort_values("radical_number", inplace=True)
+
+radicals[
+    [
+        "glyph",
+        "simplified_glyph",
+        "traditional_glyph",
+        "variant_glyph",
+        "simplified_radical_indicator",
+        "kDefinition",
+        "radical_number",
+    ]
+].to_html("radicals_2020-08-16.html")
+
+####################################################
+# Check which radical variants are not classified
+####################################################
+
+radicals_glyph_list = list(radicals.glyph)
+missing_glyphs = sorted(set(all_radical_glyphs) - set(radicals_glyph_list))
+
+missing_df = df[df.glyph.isin(missing_glyphs)].sort()
+missing_simplified = radicals[radicals.simplified_glyph.isin(missing_glyphs)]
+
+# 兒, 卤,
