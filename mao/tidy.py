@@ -3,7 +3,7 @@ import re
 import numpy
 import pandas
 
-from mao.unicode import encode_unicode_character, encode_unicode_characters
+from mao.utils import extract_encode_glyphs, encode_unicode_notation
 
 
 def spread_unihan_dataframe_columns(dataframe):
@@ -13,37 +13,30 @@ def spread_unihan_dataframe_columns(dataframe):
 
 
 def create_encoded_columns(dataframe):
-    dataframe.unicode = dataframe.unicode.copy()
-    dataframe["glyph"] = dataframe.apply(
-        lambda row: encode_unicode_character(row.unicode), axis=1
+    dataframe["glyph"] = dataframe.unicode.apply(encode_unicode_notation)
+    dataframe["simplified_glyph"] = dataframe.kSimplifiedVariant.apply(
+        extract_encode_glyphs
     )
-    dataframe["simplified_unicode"] = dataframe.kSimplifiedVariant.copy()
-    dataframe["simplified_glyph"] = dataframe.apply(
-        lambda row: encode_unicode_characters(row.kSimplifiedVariant)
-        if not pandas.isnull(row.kSimplifiedVariant)
-        else row.kSimplifiedVariant,
-        axis=1,
+    dataframe["traditional_glyph"] = dataframe.kTraditionalVariant.apply(
+        extract_encode_glyphs
     )
+    dataframe["variant_glyph"] = dataframe.kSemanticVariant.apply(extract_encode_glyphs)
 
-    dataframe["traditional_unicode"] = dataframe.kTraditionalVariant.copy()
-    dataframe["traditional_glyph"] = dataframe.apply(
-        lambda row: encode_unicode_characters(row.kTraditionalVariant)
-        if not pandas.isnull(row.kTraditionalVariant)
-        else row.kTraditionalVariant,
-        axis=1,
+    dataframe["simplified_variant"] = dataframe.kSimplifiedVariant.apply(
+        extract_encode_glyphs
     )
-
-    dataframe["variant_unicode"] = dataframe.apply(
-        lambda row: " ".join(re.findall(r"U\+[0-9A-F]+", row.kSemanticVariant))
-        if not pandas.isnull(row.kSemanticVariant)
-        else row.kTraditionalVariant,
-        axis=1,
+    dataframe["traditional_variant"] = dataframe.kTraditionalVariant.apply(
+        extract_encode_glyphs
     )
-    dataframe["variant_glyph"] = dataframe.apply(
-        lambda row: encode_unicode_characters(row.variant_unicode)
-        if not pandas.isnull(row.variant_unicode)
-        else row.kTraditionalVariant,
-        axis=1,
+    dataframe["semantic_variant"] = dataframe.kSemanticVariant.apply(
+        extract_encode_glyphs
+    )
+    dataframe[
+        "specialized_semantic_variant"
+    ] = dataframe.kSpecializedSemanticVariant.apply(extract_encode_glyphs)
+    dataframe["z_variant"] = dataframe.kZVariant.apply(extract_encode_glyphs)
+    dataframe["spoofing_variant"] = dataframe.kSpoofingVariant.apply(
+        extract_encode_glyphs
     )
 
     dataframe.sort_values(by=["glyph"], inplace=True)

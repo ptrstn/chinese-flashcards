@@ -35,15 +35,18 @@ def test_create_encoded_columns():
         "kSimplifiedVariant",
         "kTraditionalVariant",
         "kSemanticVariant",
+        "kSpecializedSemanticVariant",
+        "kZVariant",
+        "kSpoofingVariant",
     ]
 
     data = numpy.array(
         [
-            ["513F", None, "0x5152", None],
-            ["0x5E72", None, "U+4e7e U+5E79", None],
-            ["6236", "0x6237", None, None],
-            ["706B", None, None, None],
-            ["U+5fc3", None, None, "U+38FA<kMatthews U+5FC4<kMatthews"],
+            ["513F", None, "U+5152", None, None, None, None],
+            ["U+5E72", None, "U+4E7E U+5E79", None, None, None, None],
+            ["6236", "U+6237", None, None, None, None, None],
+            ["706B", None, None, None, None, None, None],
+            ["U+5fc3", None, None, "U+38FA<kMatthews U+5FC4<kMatthe", None, None, None],
         ]
     )
 
@@ -51,14 +54,14 @@ def test_create_encoded_columns():
     encoded_dataframe = create_encoded_columns(dataframe)
     encoded_dataframe.set_index("glyph", inplace=True)
 
-    assert encoded_dataframe.loc["儿", "simplified_glyph"] is None
+    assert pandas.isna(encoded_dataframe.loc["儿", "simplified_glyph"])
     assert encoded_dataframe.loc["儿", "traditional_glyph"] == "兒"
-    assert encoded_dataframe.loc["干", "simplified_glyph"] is None
+    assert pandas.isna(encoded_dataframe.loc["干", "simplified_glyph"])
     assert encoded_dataframe.loc["干", "traditional_glyph"] == "乾 幹"
     assert encoded_dataframe.loc["戶", "simplified_glyph"] == "户"
-    assert encoded_dataframe.loc["戶", "traditional_glyph"] is None
-    assert encoded_dataframe.loc["火", "simplified_glyph"] is None
-    assert encoded_dataframe.loc["火", "traditional_glyph"] is None
+    assert pandas.isna(encoded_dataframe.loc["戶", "traditional_glyph"])
+    assert pandas.isna(encoded_dataframe.loc["火", "simplified_glyph"])
+    assert pandas.isna(encoded_dataframe.loc["火", "traditional_glyph"])
     assert encoded_dataframe.loc["心", "variant_glyph"] == "㣺 忄"
 
 
