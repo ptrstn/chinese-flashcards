@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import pandas
 import requests
@@ -6,7 +6,9 @@ from bs4 import BeautifulSoup
 from requests.exceptions import SSLError
 
 UNICODE_KANGXI_URL = "https://unicode.org/charts/nameslist/n_2F00.html"
-KANGXI_RADICALS_PATH = pathlib.Path("data", "kangxi", "radicals.csv")
+KANGXI_BASE_BATH = Path("data", "kangxi")
+KANGXI_RADICALS_FILENAME = "radicals.csv"
+KANGXI_RADICALS_PATH = KANGXI_BASE_BATH.joinpath(KANGXI_RADICALS_FILENAME)
 
 
 def _get_kangxi_html_table_soup(url):
@@ -95,7 +97,7 @@ def save_kangxi_radicals_table(kangxi_table, path=KANGXI_RADICALS_PATH):
 
 
 def load_kangxi_radicals_table(path=KANGXI_RADICALS_PATH):
-    if not pathlib.Path(path).exists():
+    if not Path(path).exists():
         kangxi_table = retrieve_unicode_kangxi_table()
         save_kangxi_radicals_table(kangxi_table)
         return kangxi_table
@@ -124,3 +126,8 @@ def deunihanify_radical(radical):
         return kangxi_table.loc[radical, "glyph"]
     except KeyError:
         raise KeyError(f"Unified radical {radical} does not exist.")
+
+
+def load_kangxi_radicals(base_path=KANGXI_BASE_BATH):
+    path = Path(base_path, KANGXI_RADICALS_FILENAME)
+    return load_kangxi_radicals_table(path)

@@ -1,9 +1,7 @@
-from han.data.cedict import load_cedict
-from han.data.dedict import load_dedict
-from han.data.kangxi import load_kangxi_radicals_table
-from han.data.unihan import load_unihan
+import han
 
-unihan_df = load_unihan()
-cedict_df = load_cedict()
-dedict_df = load_dedict()
-kangxi_df = load_kangxi_radicals_table()
+cedict_df = han.load_cedict()
+dedict_df = han.load_dedict()
+hsk_df = han.load_hsk()
+radicals_df = han.load_kangxi_radicals()
+unihan_df = han.load_unihan()

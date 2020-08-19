@@ -180,7 +180,7 @@ all_radical_glyphs = set(
     + list(radicals.semantic_variant)
     + list(radicals.specialized_semantic_variant)
     + list(radicals.z_variant)
-    #+ list(radicals.spoofing_variant)
+    # + list(radicals.spoofing_variant)
 )
 
 all_radical_glyphs = [glyph for glyph in all_radical_glyphs if not pandas.isna(glyph)]
