@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .utils import load_feathered_u8_file, download_file, extract_zip
+from mao.utils import load_feathered_u8_file, download_file, extract_zip
 
 CEDICT_URL = "https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip"
 

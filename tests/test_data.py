@@ -1,8 +1,8 @@
 import pytest
 
 from mao.constants import NUMBER_OF_KANGXI_RADICALS
-from mao.data import get_kangxi_radicals_table
-from mao.unihan import download_unihan_zip
+from mao.dataloads import get_kangxi_radicals_table
+from mao.data.unihan import download_unihan_zip
 from tests.conftest import (
     SKIP_DOWNLOAD_TESTS,
     UNIHAN_TEST_PATH,

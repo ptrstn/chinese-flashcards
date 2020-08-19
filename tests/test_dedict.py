@@ -1,6 +1,6 @@
 import pytest
 
-from mao.dedict import load_dedict
+from mao.data.dedict import load_dedict
 from tests.conftest import SKIP_DOWNLOAD_TESTS
 
 

@@ -1,11 +1,11 @@
-from mao.hsk import read_all_hsk_files, add_hsk_level_column
-from mao.kangxi import add_is_kangxi_radical_column, retrieve_unicode_kangxi_table
+from mao.data.hsk import read_all_hsk_files, add_hsk_level_column
+from mao.data.kangxi import add_is_kangxi_radical_column, retrieve_unicode_kangxi_table
 from mao.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
     split_radical_additional_strokes_column,
 )
-from mao.unihan import (
+from mao.data.unihan import (
     list_unihan_file_paths,
     read_unihan_field_values,
     load_unihan,

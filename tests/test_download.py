@@ -1,6 +1,6 @@
 import pytest
 
-from mao.unihan import download_unihan_zip, read_all_unihan_files
+from mao.data.unihan import download_unihan_zip, read_all_unihan_files
 from tests.conftest import (
     SKIP_DOWNLOAD_TESTS,
     clear_unihan_test_files,

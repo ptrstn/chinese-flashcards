@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .utils import load_feathered_u8_file, download_file
+from mao.utils import load_feathered_u8_file, download_file
 
 DEDICT_URL = "https://raw.githubusercontent.com/gugray/HanDeDict/master/handedict.u8"
 

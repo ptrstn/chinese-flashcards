@@ -7,7 +7,7 @@ from mao.tidy import (
     split_radical_additional_strokes_column,
     determine_radical_by_row,
 )
-from mao.unihan import load_unihan
+from mao.data.unihan import load_unihan
 
 pandas.set_option("display.max_rows", 500)
 pandas.set_option("display.max_columns", 500)
@@ -28,11 +28,15 @@ df.kangxi_additional = df.kangxi_additional.astype("float").astype("Int64")
 df = df[
     [
         "glyph",
-        "simplified_glyph",
-        "traditional_glyph",
-        "variant_glyph",
+        "simplified_variant",
+        "traditional_variant",
+        "semantic_variant",
+        "specialized_semantic_variant",
+        "z_variant",
+        "spoofing_variant",
         "simplified_radical_indicator",
         "kDefinition",
+        "kMandarin",
         "kangxi_radical",
         "kangxi_additional",
         "radical",
@@ -40,9 +44,6 @@ df = df[
         "kRSKangXi",
         "kRSUnicode",
         "kTotalStrokes",
-        # "kSpecializedSemanticVariant",
-        # "kSpoofingVariant",
-        # "kZVariant",
     ]
 ]
 
@@ -71,7 +72,7 @@ print(
     f"are in the kangxi dictionary ({round(len(kangxi_df) / len(df) * 100, 1)}%)"
 )
 
-kangxi_radicals = df[df.kangxi_additional == 0]
+kangxi_radicals = df[df.kangxi_additional == 0].copy()
 kangxi_radicals.loc[:, "radical_number"] = kangxi_radicals.kangxi_radical
 
 simplified_kangxi_radicals = kangxi_radicals[
@@ -174,9 +175,12 @@ print(f"Unique glyphs in radicals dataframe: {len(set(radicals.glyph))}")
 
 all_radical_glyphs = set(
     list(radicals.glyph)
-    + list(radicals.traditional_glyph)
-    + list(radicals.simplified_glyph)
-    + list(radicals.variant_glyph)
+    + list(radicals.traditional_variant)
+    + list(radicals.simplified_variant)
+    + list(radicals.semantic_variant)
+    + list(radicals.specialized_semantic_variant)
+    + list(radicals.z_variant)
+    #+ list(radicals.spoofing_variant)
 )
 
 all_radical_glyphs = [glyph for glyph in all_radical_glyphs if not pandas.isna(glyph)]
@@ -198,7 +202,7 @@ all_df = df[df.glyph.isin(all_radical_glyphs)]
 #         return row.radical
 #     return numpy.nan
 
-radicals[:, "radical_number"] = radicals.apply(
+radicals.loc[:, "radical_number"] = radicals.apply(
     lambda row: determine_radical_by_row(row), axis=1
 )
 
@@ -207,14 +211,18 @@ radicals.sort_values("radical_number", inplace=True)
 radicals[
     [
         "glyph",
-        "simplified_glyph",
-        "traditional_glyph",
-        "variant_glyph",
+        "simplified_variant",
+        "traditional_variant",
+        "semantic_variant",
+        "specialized_semantic_variant",
+        "z_variant",
+        "spoofing_variant",
         "simplified_radical_indicator",
         "kDefinition",
+        "kMandarin",
         "radical_number",
     ]
-].to_html("radicals_2020-08-16.html")
+].to_html("radicals_2020-08-18.html")
 
 ####################################################
 # Check which radical variants are not classified

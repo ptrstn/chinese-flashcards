@@ -2,7 +2,7 @@ import codecs
 import os
 import re
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,7 +26,7 @@ setup(
     url="https://github.com/ptrstn/chinese-flashcards",
     author="Peter Stein",
     license="MIT",
-    packages=["mao"],
+    packages=find_packages(),
     install_requires=[
         "requests",
         "beautifulsoup4",

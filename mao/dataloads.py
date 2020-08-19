@@ -1,7 +1,7 @@
 import pandas
 
-from mao.hsk import read_all_hsk_files, add_hsk_level_column
-from mao.kangxi import (
+from mao.data.hsk import read_all_hsk_files, add_hsk_level_column
+from mao.data.kangxi import (
     retrieve_unicode_kangxi_table,
     add_is_kangxi_radical_column,
     load_kangxi_radicals_table,
@@ -12,7 +12,7 @@ from mao.tidy import (
     split_radical_additional_strokes_column,
     clean_definition,
 )
-from mao.unihan import UNIHAN_BASE_PATH, load_unihan
+from mao.data.unihan import UNIHAN_BASE_PATH, load_unihan
 
 
 def get_kangxi_radicals_table(unihan_base_path=UNIHAN_BASE_PATH):
