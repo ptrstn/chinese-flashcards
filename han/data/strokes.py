@@ -5,8 +5,8 @@ from urllib.parse import unquote
 import requests
 from bs4 import BeautifulSoup
 
-from han.data.kangxi import deunihanify_radical
-from han.utils import validate_png_file_signature, validate_gif_file_signature
+from .kangxi import deunihanify_radical
+from .utils import validate_png_file_signature, validate_gif_file_signature
 
 STROKE_ORDER_GIF_FILE_PATTERN = "{glyph}-order.gif"
 STROKE_ORDER_RED_FILE_PATTERN = "{glyph}-red.png"

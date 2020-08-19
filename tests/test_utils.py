@@ -1,9 +1,8 @@
 import numpy
 import pandas
 
+from han.data.utils import validate_png_file_signature, validate_gif_file_signature
 from han.utils import (
-    validate_png_file_signature,
-    validate_gif_file_signature,
     extract_unicode_notations,
     encode_unicode_notations_in_text,
     extract_encode_glyphs,
