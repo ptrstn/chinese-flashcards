@@ -2,7 +2,7 @@ import pathlib
 
 import pandas
 
-from mao.utils import download_file, extract_zip
+from han.utils import download_file, extract_zip
 
 UNIHAN_ZIP_URL = "https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip"
 UNIHAN_BASE_PATH = pathlib.Path("data", "unihan")

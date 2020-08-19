@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from mao.data.unihan import download_unihan_zip, read_unihan_field_values
+from han.data.unihan import download_unihan_zip, read_unihan_field_values
 from tests.conftest import (
     SKIP_DOWNLOAD_TESTS,
     clear_unihan_test_files,

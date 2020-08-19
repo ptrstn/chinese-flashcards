@@ -1,8 +1,8 @@
 import pandas
 import pytest
 
-from mao.constants import NUMBER_OF_KANGXI_RADICALS
-from mao.data.kangxi import (
+from han.constants import NUMBER_OF_KANGXI_RADICALS
+from han.data.kangxi import (
     retrieve_unicode_kangxi_table,
     add_is_kangxi_radical_column,
     unihanify_radical,

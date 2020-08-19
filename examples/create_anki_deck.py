@@ -4,7 +4,7 @@ import random
 import genanki
 import pandas
 
-from mao.data import load_radicals_dataframe
+from han.dataloads import load_radicals_dataframe
 
 pandas.set_option("display.max_rows", 500)
 pandas.set_option("display.max_columns", 500)

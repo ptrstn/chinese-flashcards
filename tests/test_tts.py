@@ -3,7 +3,7 @@ import collections
 from google.api_core.exceptions import ServiceUnavailable
 from google.auth.exceptions import DefaultCredentialsError, RefreshError
 
-from mao.tts import ChineseTTSClient, save_speech_response
+from han.tts import ChineseTTSClient, save_speech_response
 
 
 def test_tts():

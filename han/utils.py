@@ -7,7 +7,7 @@ import pandas
 import requests
 from requests.exceptions import SSLError
 
-from mao.decorators import non_null_call
+from han.decorators import non_null_call
 
 
 def validate_png_file_signature(byte_content):

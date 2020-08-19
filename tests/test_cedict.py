@@ -1,6 +1,6 @@
 import pytest
 
-from mao.data.cedict import load_cedict
+from han.data.cedict import load_cedict
 from tests.conftest import SKIP_DOWNLOAD_TESTS
 
 

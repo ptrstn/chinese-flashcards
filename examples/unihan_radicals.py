@@ -1,13 +1,13 @@
 # Check which characters in the unihan database are radicals
 import pandas
 
-from mao.tidy import (
+from han.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
     split_radical_additional_strokes_column,
     determine_radical_by_row,
 )
-from mao.data.unihan import load_unihan
+from han.data.unihan import load_unihan
 
 pandas.set_option("display.max_rows", 500)
 pandas.set_option("display.max_columns", 500)

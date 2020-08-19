@@ -22,7 +22,7 @@ def find_version(*file_paths):
 
 setup(
     name="chinese-flashcards",
-    version=find_version("mao", "__init__.py"),
+    version=find_version("han", "__init__.py"),
     url="https://github.com/ptrstn/chinese-flashcards",
     author="Peter Stein",
     license="MIT",

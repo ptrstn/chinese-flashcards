@@ -3,7 +3,7 @@ import re
 import numpy
 import pandas
 
-from mao.utils import extract_encode_glyphs, encode_unicode_notation
+from han.utils import extract_encode_glyphs, encode_unicode_notation
 
 
 def spread_unihan_dataframe_columns(dataframe):

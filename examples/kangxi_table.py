@@ -4,7 +4,7 @@ import subprocess
 
 import pandas
 
-from mao.data import get_kangxi_radicals_table
+from han.dataloads import get_kangxi_radicals_table
 
 pandas.set_option("display.max_rows", 500)
 pandas.set_option("display.max_columns", 500)

@@ -4,7 +4,7 @@ import numpy
 import pandas
 from pandas._libs.missing import NAType
 
-from mao.tidy import (
+from han.tidy import (
     spread_unihan_dataframe_columns,
     split_radical_additional_strokes_column,
     create_encoded_columns,

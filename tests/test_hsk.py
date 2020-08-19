@@ -1,6 +1,6 @@
 import pandas
 
-from mao.data.hsk import read_all_hsk_files, add_hsk_level_column
+from han.data.hsk import read_all_hsk_files, add_hsk_level_column
 
 
 def test_read_all_hsk_files():

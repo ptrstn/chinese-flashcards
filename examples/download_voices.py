@@ -1,5 +1,5 @@
-from mao.data.kangxi import load_kangxi_radicals_table
-from mao.tts import ChineseTTSClient, save_speech_response, CHINESE_VOICE_NAMES
+from han.data.kangxi import load_kangxi_radicals_table
+from han.tts import ChineseTTSClient, save_speech_response, CHINESE_VOICE_NAMES
 
 tts_client = ChineseTTSClient()
 kangxi_table = load_kangxi_radicals_table()

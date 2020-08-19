@@ -1,4 +1,4 @@
-from mao.data.strokes import download_glyph_strokes_to_disk
+from han.data.strokes import download_glyph_strokes_to_disk
 
 
 def test_download_glyph_strokes_to_disk():

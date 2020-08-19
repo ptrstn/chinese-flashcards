@@ -1,4 +1,4 @@
-from mao.unicode import (
+from han.unicode import (
     get_unicode_name,
     encode_unicode_character,
     encode_unicode_characters,

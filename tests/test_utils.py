@@ -1,7 +1,7 @@
 import numpy
 import pandas
 
-from mao.utils import (
+from han.utils import (
     validate_png_file_signature,
     validate_gif_file_signature,
     extract_unicode_notations,

@@ -1,18 +1,18 @@
 import pandas
 
-from mao.data.hsk import read_all_hsk_files, add_hsk_level_column
-from mao.data.kangxi import (
+from han.data.hsk import read_all_hsk_files, add_hsk_level_column
+from han.data.kangxi import (
     retrieve_unicode_kangxi_table,
     add_is_kangxi_radical_column,
     load_kangxi_radicals_table,
 )
-from mao.tidy import (
+from han.tidy import (
     spread_unihan_dataframe_columns,
     create_encoded_columns,
     split_radical_additional_strokes_column,
     clean_definition,
 )
-from mao.data.unihan import UNIHAN_BASE_PATH, load_unihan
+from han.data.unihan import UNIHAN_BASE_PATH, load_unihan
 
 
 def get_kangxi_radicals_table(unihan_base_path=UNIHAN_BASE_PATH):
