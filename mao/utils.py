@@ -2,9 +2,10 @@ import re
 from zipfile import ZipFile
 
 import numpy
-import pandas
 import requests
 from requests.exceptions import SSLError
+
+from mao.decorators import non_null_call
 
 
 def validate_png_file_signature(byte_content):
@@ -70,8 +71,7 @@ def encode_unicode_notation(unicode_notation):
     return chr(int(unicode_notation.replace("U+", ""), 16))
 
 
+@non_null_call
 def extract_encode_glyphs(value):
-    if pandas.isnull(value):
-        return value
     glyphs = encode_unicode_notations_in_text(extract_unicode_notations(value))
     return glyphs if glyphs else numpy.nan
