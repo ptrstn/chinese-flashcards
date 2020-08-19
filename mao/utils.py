@@ -1,7 +1,9 @@
 import re
+from pathlib import Path
 from zipfile import ZipFile
 
 import numpy
+import pandas
 import requests
 from requests.exceptions import SSLError
 
@@ -37,6 +39,7 @@ def download_file(url, download_to_path, quiet=False):
         response = requests.get(url, allow_redirects=True)
     except SSLError:
         response = requests.get(url, allow_redirects=True, verify=False)
+    download_to_path = Path(download_to_path)
     download_to_path.parent.mkdir(parents=True, exist_ok=True)
     with open(download_to_path, "wb") as file:
         file.write(response.content)
@@ -47,6 +50,28 @@ def extract_zip(zip_file_path, extract_to_path, quiet=False):
         print(f"Extracting {zip_file_path} to {extract_to_path}...")
     with ZipFile(zip_file_path, "r") as zip_file:
         zip_file.extractall(extract_to_path)
+
+
+def read_u8_file(path, translation_language):
+    # Cannot use the comment parameter, because it will cut lines that use that char
+    # Cannot use the sep parameter, because it can used in translation text
+    dataframe = pandas.read_table(path, names=["line"])
+    dataframe = dataframe[~dataframe.line.str.startswith("#")]
+    dataframe.reset_index(inplace=True)
+    dataframe = dataframe.line.str.extract(r"^\s*(.+)\s(.+)\s\[(.*)\]\s*/(.*)/\s*$")
+    column_names = ["traditional", "simplified", "pinyin", translation_language]
+    dataframe.columns = column_names
+    return dataframe
+
+
+def load_feathered_u8_file(u8_path, feather_path, language):
+    try:
+        return pandas.read_feather(feather_path)
+    except FileNotFoundError:
+        df = read_u8_file(u8_path, language)
+        print(f"Saving DataFrame in Feather format to {feather_path}...")
+        df.to_feather(feather_path)
+        return df
 
 
 def extract_unicode_notations(text, join_on=" "):
