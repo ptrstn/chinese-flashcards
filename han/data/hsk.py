@@ -30,5 +30,5 @@ def add_hsk_level_column(dataframe, hsk_table):
     return dataframe.merge(hsk_table, how="left", on="glyph")
 
 
-def load_hsk(base_path=HSK_BASE_PATH):
+def load_hsk(base_path=HSK_BASE_PATH) -> pandas.DataFrame:
     return read_all_hsk_files(base_path)

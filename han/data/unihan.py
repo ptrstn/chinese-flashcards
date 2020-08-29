@@ -43,7 +43,7 @@ def read_unihan_field_values(file_path):
     return fields
 
 
-def load_unihan(base_path=UNIHAN_BASE_PATH):
+def load_unihan(base_path=UNIHAN_BASE_PATH) -> pandas.DataFrame:
     feather_path = pathlib.Path(base_path, UNIHAN_FEATHER_FILE_NAME)
     try:
         return pandas.read_feather(feather_path)

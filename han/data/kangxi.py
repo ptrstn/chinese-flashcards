@@ -128,6 +128,6 @@ def deunihanify_radical(radical):
         raise KeyError(f"Unified radical {radical} does not exist.")
 
 
-def load_kangxi_radicals(base_path=KANGXI_BASE_BATH):
+def load_kangxi_radicals(base_path=KANGXI_BASE_BATH) -> pandas.DataFrame:
     path = Path(base_path, KANGXI_RADICALS_FILENAME)
     return load_kangxi_radicals_table(path)

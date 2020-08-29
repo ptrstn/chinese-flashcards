@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pandas
+
 from .utils import load_feathered_u8_file, download_file
 
 DEDICT_URL = "https://raw.githubusercontent.com/gugray/HanDeDict/master/handedict.u8"
@@ -11,7 +13,7 @@ DEDICT_U8_FILE_NAME = "handedict.u8"
 DEDICT_FEATHER_FILE_NAME = "dedict.feather"
 
 
-def load_dedict(base_path=DEDICT_BASE_PATH):
+def load_dedict(base_path=DEDICT_BASE_PATH) -> pandas.DataFrame:
     u8_path = Path(base_path, DEDICT_U8_FILE_NAME)
     feather_path = Path(base_path, DEDICT_FEATHER_FILE_NAME)
     language = "german"
