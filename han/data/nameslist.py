@@ -1,6 +1,11 @@
+from pathlib import Path
+
+import pandas
 import requests
 from bs4 import BeautifulSoup
 from requests.exceptions import SSLError
+
+NAMESLIST_BASE_PATH = Path("data", "nameslist")
 
 
 def request_html_table_soup(url) -> BeautifulSoup:
@@ -29,6 +34,14 @@ def dismantle_to_entities(soup: BeautifulSoup) -> list:
     ]
     entities = entitize(elements=rows, indices=entity_indices)
     return entities
+
+
+def entities_to_dicts(entities: list) -> list:
+    return [
+        dict_element
+        for entity in entities
+        for dict_element in entity_to_dicts(entity)
+    ]
 
 
 def find_name_text(row):
@@ -75,3 +88,29 @@ def entity_to_dicts(entity: list) -> list:
             }
         ]
     )
+
+
+def load_nameslist(url, base_path=NAMESLIST_BASE_PATH):
+    stem = Path(url).stem
+    feather_path = Path(base_path, f"{stem}.feather")
+    try:
+        return pandas.read_feather(feather_path)
+    except FileNotFoundError:
+        soup = request_html_table_soup(url)
+        entities = dismantle_to_entities(soup)
+        dicts = entities_to_dicts(entities)
+        df = pandas.DataFrame(dicts)
+        print(f"Saving {stem} nameslist DataFrame in Feather format to {feather_path}...")
+        feather_path.parent.mkdir(exist_ok=True, parents=True)
+        df.to_feather(feather_path)
+        return df
+
+
+def load_kangxi_radicals_nameslist(base_path=NAMESLIST_BASE_PATH):
+    url = "https://unicode.org/charts/nameslist/n_2F00.html"
+    return load_nameslist(url=url, base_path=base_path)
+
+
+def load_cjk_supplements_nameslist(base_path=NAMESLIST_BASE_PATH):
+    url = "https://unicode.org/charts/nameslist/n_2E80.html"
+    return load_nameslist(url=url, base_path=base_path)

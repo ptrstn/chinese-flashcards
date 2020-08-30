@@ -6,6 +6,7 @@ from han.data.nameslist import (
     dismantle_to_entities,
     entitize,
     entity_to_dicts,
+    entities_to_dicts, load_kangxi_radicals_nameslist, load_cjk_supplements_nameslist,
 )
 
 
@@ -118,28 +119,31 @@ def test_entity_to_dicts_mixed_rows():
 
 
 def test_entity_to_dicts_kangxi_nameslist():
-    kangxi_soup = request_html_table_soup(
-        "https://unicode.org/charts/nameslist/n_2F00.html"
-    )
-    kangxi_entities = dismantle_to_entities(kangxi_soup)
-    assert len(kangxi_entities) == 214, "Should be 214 Kangxi radicals"
-    kangxi_dicts_lists = [entity_to_dicts(entity) for entity in kangxi_entities]
-    kangxi_dicts = [element for elements in kangxi_dicts_lists for element in elements]
+    url = "https://unicode.org/charts/nameslist/n_2F00.html"
+    soup = request_html_table_soup(url)
 
-    assert len(kangxi_dicts) > 214
+    entities = dismantle_to_entities(soup)
+    assert len(entities) == 214, "Should be 214 Kangxi radicals"
+
+    kangxi_dicts = entities_to_dicts(entities)
+    assert len(kangxi_dicts) > 214, "Should be more than 214 unified radical mappings"
 
 
 def test_entity_to_dicts_kangxi_nameslist():
-    supplements_soup = request_html_table_soup(
-        "https://unicode.org/charts/nameslist/n_2E80.html"
-    )
-    supplements_entities = dismantle_to_entities(supplements_soup)
-    assert len(supplements_entities) == 115
-    supplements_dicts_lists = [
-        entity_to_dicts(entity) for entity in supplements_entities
-    ]
-    supplements_dicts = [
-        element for elements in supplements_dicts_lists for element in elements
-    ]
+    url = "https://unicode.org/charts/nameslist/n_2E80.html"
+    soup = request_html_table_soup(url)
 
+    entities = dismantle_to_entities(soup)
+    assert len(entities) == 115
+
+    supplements_dicts = entities_to_dicts(entities)
     assert len(supplements_dicts) > 115
+    assert supplements_dicts[0]["name"] == "Cjk Radical Repeat"
+    assert supplements_dicts[115]["name"] == "Cjk Radical Eat Two"
+
+
+def test_load_nameslists():
+    radicals_df = load_kangxi_radicals_nameslist(base_path="test_data/nameslist")
+    assert len(radicals_df) > 214
+    supplements_df = load_cjk_supplements_nameslist(base_path="test_data/nameslist")
+    assert len(supplements_df) > 115
