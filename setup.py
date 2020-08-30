@@ -30,6 +30,7 @@ setup(
     install_requires=[
         "requests",
         "beautifulsoup4",
+        "numpy",
         "pandas",
         "pyarrow",
         "google-cloud-texttospeech",
