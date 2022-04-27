@@ -129,7 +129,7 @@ def test_entity_to_dicts_kangxi_nameslist():
     assert len(kangxi_dicts) > 214, "Should be more than 214 unified radical mappings"
 
 
-def test_entity_to_dicts_kangxi_nameslist():
+def test_entity_to_dicts_kangxi_nameslist2():
     url = "https://unicode.org/charts/nameslist/n_2E80.html"
     soup = request_html_table_soup(url)
 
@@ -139,7 +139,9 @@ def test_entity_to_dicts_kangxi_nameslist():
     supplements_dicts = entities_to_dicts(entities)
     assert len(supplements_dicts) > 115
     assert supplements_dicts[0]["name"] == "Cjk Radical Repeat"
-    assert supplements_dicts[115]["name"] == "Cjk Radical Eat Two"
+    assert supplements_dicts[0]["glyph"] == "⺀"
+    assert supplements_dicts[115]["name"] == "Cjk Radical Eat One"
+    assert supplements_dicts[115]["glyph"] == "⻝"
 
 
 def test_load_nameslists():
