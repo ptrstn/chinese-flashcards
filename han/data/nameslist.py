@@ -19,6 +19,10 @@ def request_html_table_soup(url) -> BeautifulSoup:
 
 
 def entitize(elements, indices):
+    """
+    Turn coherent data in an elements list into single entity units.
+    The entity units are described by the indicies.
+    """
     entities = []
     for idx, entity_index in enumerate(indices):
         next_index = indices[idx + 1] if idx < len(indices) - 1 else None
