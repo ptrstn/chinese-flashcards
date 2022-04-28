@@ -1,4 +1,3 @@
-import pandas
 from bs4 import BeautifulSoup
 
 from han.data.nameslist import (
