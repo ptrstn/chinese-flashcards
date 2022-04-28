@@ -11,13 +11,20 @@ from .utils import validate_png_file_signature, validate_gif_file_signature
 STROKE_ORDER_GIF_FILE_PATTERN = "{glyph}-order.gif"
 STROKE_ORDER_RED_FILE_PATTERN = "{glyph}-red.png"
 
+USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/100.0.4896.127 Safari/537.36"
+)
+HEADERS = {"user-agent": USER_AGENT}
+
 
 class ImageNotFound(ValueError):
     pass
 
 
 def download_wikimedia_image(url, image_alt):
-    response = requests.get(url)
+    response = requests.get(url, headers=HEADERS)
     response.raise_for_status()
     html = response.text
     soup = BeautifulSoup(html, "html.parser")
@@ -26,7 +33,7 @@ def download_wikimedia_image(url, image_alt):
     except TypeError:
         raise ImageNotFound()
     filename = unquote(image_url.split("/")[-1]).split("?")[0]
-    image_response = requests.get(image_url)
+    image_response = requests.get(image_url, headers=HEADERS)
     image_response.raise_for_status()
     return filename, image_response.content
 
