@@ -18,12 +18,15 @@ def read_hsk_file(path):
 
 
 def list_hsk_file_paths(base_path=HSK_BASE_PATH):
-    return sorted(pathlib.Path(base_path).glob(HSK_FILE_PATTERN))
+    paths = pathlib.Path(base_path).glob(HSK_FILE_PATTERN)
+    return sorted(paths)
 
 
 def read_all_hsk_files(base_path=HSK_BASE_PATH):
     file_paths = list_hsk_file_paths(base_path)
-    return pandas.concat([read_hsk_file(path) for path in file_paths])
+    hsk_files = [read_hsk_file(path) for path in file_paths]
+    dataframe = pandas.concat(hsk_files)
+    return dataframe
 
 
 def add_hsk_level_column(dataframe, hsk_table):
