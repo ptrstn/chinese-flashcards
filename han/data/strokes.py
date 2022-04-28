@@ -25,8 +25,9 @@ def download_wikimedia_image(url, image_alt):
         image_url = soup.find("img", {"alt": image_alt})["src"]
     except TypeError:
         raise ImageNotFound()
-    filename = unquote(image_url.split("/")[-1])
+    filename = unquote(image_url.split("/")[-1]).split("?")[0]
     image_response = requests.get(image_url)
+    image_response.raise_for_status()
     return filename, image_response.content
 
 
