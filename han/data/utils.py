@@ -41,19 +41,17 @@ def download_file(url, download_to_path, quiet=False):
         file.write(response.content)
 
 
-def extract_zip(zip_file_path, extract_to_path, quiet=False):
+def extract_zip(zip_file_path, extract_to_base_path, quiet=False):
     if not quiet:
-        print(f"Extracting {zip_file_path} to {extract_to_path}...")
+        print(f"Extracting {zip_file_path} to {extract_to_base_path}...")
     with ZipFile(zip_file_path, "r") as zip_file:
-        zip_file.extractall(extract_to_path)
+        zip_file.extractall(extract_to_base_path)
 
 
 def read_u8_file(path, translation_language):
     # Cannot use the comment parameter, because it will cut lines that use that char
-    # Cannot use the sep parameter, because it can used in translation text
-    dataframe = pandas.read_table(path, names=["line"])
-    dataframe = dataframe[~dataframe.line.str.startswith("#")]
-    dataframe.reset_index(inplace=True)
+    # Cannot use the sep parameter, because it can be used in translation text
+    dataframe = pandas.read_table(path, names=["line"], comment="#")
     dataframe = dataframe.line.str.extract(r"^\s*(.+)\s(.+)\s\[(.*)\]\s*/(.*)/\s*$")
     column_names = ["traditional", "simplified", "pinyin", translation_language]
     dataframe.columns = column_names

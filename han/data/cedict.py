@@ -21,6 +21,10 @@ def load_cedict(base_path=CEDICT_BASE_PATH) -> pandas.DataFrame:
     try:
         return load_feathered_u8_file(u8_path, feather_path, language=language)
     except FileNotFoundError:
-        download_file(url=CEDICT_URL, download_to_path=u8_path)
-        extract_zip(u8_path, base_path, quiet=False)
+        u8_zip_path = Path(base_path, f"{CEDICT_U8_FILE_NAME}.zip")
+        if not Path(u8_zip_path).exists():
+            download_file(url=CEDICT_URL, download_to_path=u8_zip_path)
+        extract_zip(
+            zip_file_path=u8_zip_path, extract_to_base_path=base_path, quiet=False
+        )
         return load_feathered_u8_file(u8_path, feather_path, language=language)

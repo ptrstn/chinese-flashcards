@@ -21,5 +21,6 @@ def load_dedict(base_path=DEDICT_BASE_PATH) -> pandas.DataFrame:
     try:
         return load_feathered_u8_file(u8_path, feather_path, language=language)
     except FileNotFoundError:
-        download_file(url=DEDICT_URL, download_to_path=u8_path)
+        if not Path(u8_path).exists():
+            download_file(url=DEDICT_URL, download_to_path=u8_path)
         return load_feathered_u8_file(u8_path, feather_path, language=language)
