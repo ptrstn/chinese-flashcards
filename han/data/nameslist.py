@@ -42,9 +42,7 @@ def dismantle_to_entities(soup: BeautifulSoup) -> list:
 
 def entities_to_dicts(entities: list) -> list:
     return [
-        dict_element
-        for entity in entities
-        for dict_element in entity_to_dicts(entity)
+        dict_element for entity in entities for dict_element in entity_to_dicts(entity)
     ]
 
 
@@ -104,7 +102,9 @@ def load_nameslist(url, base_path=NAMESLIST_BASE_PATH):
         entities = dismantle_to_entities(soup)
         dicts = entities_to_dicts(entities)
         df = pandas.DataFrame(dicts)
-        print(f"Saving {stem} nameslist DataFrame in Feather format to {feather_path}...")
+        print(
+            f"Saving {stem} nameslist DataFrame in Feather format to {feather_path}..."
+        )
         feather_path.parent.mkdir(exist_ok=True, parents=True)
         df.to_feather(feather_path)
         return df

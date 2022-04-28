@@ -22,7 +22,8 @@ class GoogleTTSClient:
 
     def speak(self, text, language_code, voice_name):
         voice = texttospeech.VoiceSelectionParams(
-            language_code=language_code, name=voice_name,
+            language_code=language_code,
+            name=voice_name,
         )
 
         synthesis_input = texttospeech.SynthesisInput(text=text)

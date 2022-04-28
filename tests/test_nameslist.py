@@ -6,7 +6,9 @@ from han.data.nameslist import (
     dismantle_to_entities,
     entitize,
     entity_to_dicts,
-    entities_to_dicts, load_kangxi_radicals_nameslist, load_cjk_supplements_nameslist,
+    entities_to_dicts,
+    load_kangxi_radicals_nameslist,
+    load_cjk_supplements_nameslist,
 )
 
 

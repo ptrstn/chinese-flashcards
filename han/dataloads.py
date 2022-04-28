@@ -97,7 +97,10 @@ def load_radicals_dataframe():
     german_radicals = german_radicals[["number", "meaning_german"]]
 
     radicals_df = pandas.merge(
-        radicals_df, german_radicals, left_on="radical", right_on="number",
+        radicals_df,
+        german_radicals,
+        left_on="radical",
+        right_on="number",
     )
 
     radicals_df = radicals_df[
