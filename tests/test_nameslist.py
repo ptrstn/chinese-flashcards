@@ -51,11 +51,17 @@ def test_entitize():
 
 
 def test_entity_to_dicts_two_rows():
-    html = """
-    <tr><td><code><a name="2E81">2E81</a></code></td><td class="c">&nbsp;⺁&nbsp;</td><td colspan="2"><span class="name">Cjk Radical Cliff</span></td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td><td><code>5382</code>&nbsp;厂</td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td><td><code>20086</code>&nbsp;𠂆</td></tr>
-    """
+    html = (
+        "<tr>"
+        '<td><code><a name="2E81">2E81</a></code></td>'
+        '<td class="c">&nbsp;⺁&nbsp;</td>'
+        '<td colspan="2"><span class="name">Cjk Radical Cliff</span></td></tr><tr>'
+        '<td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td>'
+        "<td><code>5382</code>&nbsp;厂</td></tr><tr><td>&nbsp;</td>"
+        '<td class="char">&nbsp;</td><td class="c">→</td>'
+        "<td><code>20086</code>&nbsp;𠂆</td>"
+        "</tr>"
+    )
     soup = BeautifulSoup(html, "html.parser")
     entity = dismantle_to_entities(soup)[0]
     entity_dicts = entity_to_dicts(entity)
@@ -76,9 +82,13 @@ def test_entity_to_dicts_two_rows():
 
 
 def test_entity_to_dicts_no_rows():
-    html = """
-    <tr><td width="1pt"><code><a name="2E80">2E80</a></code></td><td class="c">&nbsp;⺀&nbsp;</td><td colspan="2"><span class="name">Cjk Radical Repeat</span></td></tr>
-    """
+    html = (
+        "<tr>"
+        '<td width="1pt"><code><a name="2E80">2E80</a></code></td>'
+        '<td class="c">&nbsp;⺀&nbsp;</td>'
+        '<td colspan="2"><span class="name">Cjk Radical Repeat</span></td>'
+        "</tr>"
+    )
     soup = BeautifulSoup(html, "html.parser")
     entity = dismantle_to_entities(soup)[0]
     entity_dicts = entity_to_dicts(entity)
@@ -93,13 +103,31 @@ def test_entity_to_dicts_no_rows():
 
 
 def test_entity_to_dicts_mixed_rows():
-    html = """
-    <tr><td><code><a name="2EAB">2EAB</a></code></td><td class="c">&nbsp;⺫&nbsp;</td><td colspan="2"><span class="name">Cjk Radical Eye</span></td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">•</td><td>form used at top</td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td><td><code>2EB2</code>&nbsp;⺲ cjk radical net two</td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td><td><code>76EE</code>&nbsp;目</td></tr>
-    <tr><td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">→</td><td><code>7F52</code>&nbsp;罒</td></tr>
-    """
+    html = (
+        "<tr>"
+        '<td><code><a name="2EAB">2EAB</a></code></td>'
+        '<td class="c">&nbsp;⺫&nbsp;</td>'
+        '<td colspan="2"><span class="name">Cjk Radical Eye</span></td>'
+        "</tr>"
+        "<tr>"
+        '<td>&nbsp;</td><td class="char">&nbsp;</td><td class="c">•</td>'
+        "<td>form used at top</td></tr><tr><td>&nbsp;</td>"
+        '<td class="char">&nbsp;</td><td class="c">→</td>'
+        "<td><code>2EB2</code>&nbsp;⺲ cjk radical net two</td>"
+        "</tr>"
+        "<tr>"
+        "<td>&nbsp;</td>"
+        '<td class="char">&nbsp;</td>'
+        '<td class="c">→</td>'
+        "<td><code>76EE</code>&nbsp;目</td>"
+        "</tr>"
+        "<tr>"
+        "<td>&nbsp;</td>"
+        '<td class="char">&nbsp;</td>'
+        '<td class="c">→</td>'
+        "<td><code>7F52</code>&nbsp;罒</td>"
+        "</tr>"
+    )
     soup = BeautifulSoup(html, "html.parser")
     entity = dismantle_to_entities(soup)[0]
     entity_dicts = entity_to_dicts(entity)
